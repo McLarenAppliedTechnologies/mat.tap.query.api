@@ -100,15 +100,15 @@ A sample configuration and an explanation of settings is given below.
 - `ThreadCount`: Number of processor threads to be used by the Influx Writer. A value larger than 1 can improve throughput of the writer in a machine that supports multithreading.
 - `Connections`: Contains all the database connection information organized by the topic (e.g. Kafka topics.)
 - `[TopicName]` : Change the value here depending on the message queue topic you want to subscribe to.
-- `InfluxConnections`: Contains all the InfluxDb connection strings. Influx writer supports multiple Influx connections per topic as labels (more on labels later). If you plan to use just one InfluxDb instance, use asterisk symbol (*) as a wildcard key. This means, all telemetry data under the topic will be saved to InfluxDb specified in `InfluxDbUrl` regardless of labels.
+- `InfluxConnections`: Contains all the InfluxDb connection strings. Influx writer supports multiple InfluxDb connections per topic under [labels](#label-supprt). If you plan to use just one InfluxDb instance, use asterisk symbol (*) as a wildcard key. This means, all telemetry data under the topic will be saved to InfluxDb specified in `InfluxDbUrl` regardless of the label.
 - `SqlServerConnectionString`: Connection string for session metadata relational database. Influx Writer supports one metadata connection per topic.
 
 #### Label Supprt
 
-Labels are a concept introduced in Influx Writer to provide support for scaling Influx Writer and the time-series database in a flexible manner. Using labels, you can partition a topic and save data for a single topic in multiple InfluxDb instances using multiple instances of Influx Writers.
+Labels are a concept introduced in Influx Writer to provide support for scaling and High Availability for Influx Writer and the time-series database in a flexible manner. Using labels, you can partition a topic and save data for a single topic in multiple InfluxDb instances using multiple instances of Influx Writers.
 
 An example usage of labels in F1 Racing scenario is to give separate labels for each driver and specify `InfluxDbUrl` per label. This way, you can deploy and manage separate instances of InfluxDb Writers and databases per driver in which each instance will only have to handle data related to the specific label, hence reducing the load on each instance.
 
-#### Configure Logging
+#### Logging
 
 Influx Writer has extensive logging and uses Nlog for logger implementation. You can configure logging in the `nlog.config` file or provide your own logging configuration. More information on available configuration options can be found [here](https://github.com/nlog/nlog/wiki/Configuration-file).
