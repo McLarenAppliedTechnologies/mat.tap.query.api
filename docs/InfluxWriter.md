@@ -40,35 +40,27 @@ All the commands below must be run on Command-line Interface, PowerShell or Term
 
 Specify the database connection string in `config.json` found in the Influx Connector root directory. For SQL Server:
 
-    ```
     {
         "ConnectionStrings": {
             "DefaultConnection": "Server=(localdb)\\MSSQLLocalDB;Initial Catalog=[DatabaseName];User Id=[Username];Password=[Password];"
         }
     }
-    ```
 
 Relational database provider can be replaced by specifying the appropriate middleware in `SessionsDbContextFactory` class. Default implementation uses MSSQL Server.
 
 Run the following command to create the database and the schema:
 
-    ```
     dotnet ef database update
-    ```
 
 2. Customizing metadata model
 
 Modify the `SessionsDbContext` class and create the migrations:
 
-    ```
     dotnet ef migrations add [MigrationName]
-    ```
 
 Apply migrations to the database:
 
-    ```
     dotnet ef database update
-    ```
 
 For a more comprehensive guide on managing migrations, please refer to [EF Core Migrations](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/).
 
@@ -80,13 +72,10 @@ InfluxDb writer subscribes to message brokers and saves telemetry data and sessi
 
 In order to use InfluxDb writer, add the relevant configuration in `config.json` file and start service using
 
-    ```
     dotnet MAT.TAP.AAS.InfluxDb.Writer.dll
-    ```
 
 A sample configuration and an explanation of settings is given below.
 
-    ```
     {
         "BrokerList": "xx.xxx.x.xx",
         "DependencyUrl": "http://[hostname/ip_address]/api/dependencies/",
@@ -104,7 +93,6 @@ A sample configuration and an explanation of settings is given below.
             }
         }
     }
-    ```
 
 `BrokerList`: Address of the message broker cluster.
 `DependencyUrl` and `DependencyGroup`: Settings related to ATLAS configuration and session metadata.
