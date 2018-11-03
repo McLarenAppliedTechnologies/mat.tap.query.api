@@ -94,14 +94,14 @@ A sample configuration and an explanation of settings is given below.
         }
     }
 
-`BrokerList`: Address of the message broker cluster.
-`DependencyUrl` and `DependencyGroup`: Settings related to ATLAS configuration and session metadata.
-`BatchSize`: Number of telemetry samples to be saved to InfluxDb at a time.
-`ThreadCount`: Number of processor threads to be used by the Influx Writer. A value larger than 1 can improve throughput of the writer in a machine that supports multithreading.
-`Connections`: Contains all the database connection information organized by the topic (e.g. Kafka topics.)
-`[TopicName]` : Change the value here depending on the message queue topic you want to subscribe to.
-`InfluxConnections`: Contains all the InfluxDb connection strings. Influx writer supports multiple Influx connections per topic as labels (more on labels later). If you plan to use just one InfluxDb instance, use asterisk symbol (*) as a wildcard key. This means, all telemetry data under the topic will be saved to InfluxDb specified in `InfluxDbUrl` regardless of labels.
-`SqlServerConnectionString`: Connection string for session metadata relational database. Influx Writer supports one metadata connection per topic.
+- `BrokerList`: Address of the message broker cluster.
+- `DependencyUrl` and `DependencyGroup`: Settings related to ATLAS configuration and session metadata.
+- `BatchSize`: Number of telemetry samples to be saved to InfluxDb at a time.
+- `ThreadCount`: Number of processor threads to be used by the Influx Writer. A value larger than 1 can improve throughput of the writer in a machine that supports multithreading.
+- `Connections`: Contains all the database connection information organized by the topic (e.g. Kafka topics.)
+- `[TopicName]` : Change the value here depending on the message queue topic you want to subscribe to.
+- `InfluxConnections`: Contains all the InfluxDb connection strings. Influx writer supports multiple Influx connections per topic as labels (more on labels later). If you plan to use just one InfluxDb instance, use asterisk symbol (*) as a wildcard key. This means, all telemetry data under the topic will be saved to InfluxDb specified in `InfluxDbUrl` regardless of labels.
+- `SqlServerConnectionString`: Connection string for session metadata relational database. Influx Writer supports one metadata connection per topic.
 
 #### Label Supprt
 
