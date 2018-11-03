@@ -42,7 +42,7 @@ Specify the database connection string in `config.json`. For SQL Server:
     ```
     {
         "ConnectionStrings": {
-            "DefaultConnection": "Server=(localdb)\\MSSQLLocalDB;Initial Catalog=[DatabaseName];User Id=[Username];Password=[Password]];"
+            "DefaultConnection": "Server=(localdb)\\MSSQLLocalDB;Initial Catalog=[DatabaseName];User Id=[Username];Password=[Password];"
         }
     }
     ```
@@ -80,4 +80,35 @@ In order to use InfluxDb writer, add the relevant configuration in `config.json`
     ```
     dotnet MAT.TAP.AAS.InfluxDb.Writer.dll
     ```
+
+A sample configuration and explanation of  settings is given below.
+
+    ```
+    {
+        "BrokerList": "xx.xxx.x.xx",
+        "DependencyUrl": "http://[hostname or IP address]/api/dependencies/",
+        "DependencyGroup": "[dependency group identifier]",
+        "BatchSize": 100000,
+        "ThreadCount": 5,
+        "Connections": {
+            "[TopicName]": {
+            "InfluxConnections": {
+                "*": {
+                "InfluxDbUrl": "http://[hostname or IP address]"
+                }
+            },
+            "SqlServerConnectionString": "Server=(localdb)\\MSSQLLocalDB;Initial Catalog=[DatabaseName];User Id=[Username];Password=[Password];"
+            }
+        }
+    }
+    ```
+
+`BrokerList`: Address of the message broker cluster.
+`DependencyUrl` and `DependencyGroup`: Settings related to ATLAS and session metadata.
+`BatchSize`: Number of telemetry samples to be saved to InfluxDb at a time.
+`ThreadCount`: Number of processor threads to be used by Influx Writer. A value larger than 1 can improve throughput of the writer in a machine that supports multithreading.
+`Connections`: Contains all the database connection information organized by the topic (e.g. Kafka topics.)
+`[TopicName]` : Change the value here depending on the message queue topic you want to subscribe to.
+`InfluxConnections`: Contains all the InfluxDb connection strings. Influx writer supports multiple Influx connections per topic (more on labels later). If you plan to use just one InfluxDb instance, use astrix (*) as a wildcard key. This means, all labels under the topic will be saved to InfluxDb specified in `InfluxDbUrl`.
+`SqlServerConnectionString`: Connection string for session metadata relational database. Influx Writer supports one metadata connection per topic.
 
