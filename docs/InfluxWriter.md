@@ -17,16 +17,16 @@ Telemetry data is saved to various storage implementations such as SqlRace and I
 
 ## InfluxDb Writer
 
-InfluxDb Writer consists of two components: [Influx Connector](#influxdb-connector) and the [Influx Writer](#influxdb-writer-1).
+InfluxDb Writer consists of two components: [Influx Connector](#influxdb-connector) and [Influx Writer](#influxdb-writer-1).
 
 ### InfluxDb Connector
 
-Influx Connector is a .NET Standard compliant library providing DAL abstractions for session metadata and telemetry data storage. Session metadata DAL services work with any relational database provider while teletmetry data services are defined for InfluxDb. Since, it's .NET Standard compliant, Influx Connector can be used by any implementation of .NET or .NET Core and is platform independent.
+Influx Connector is a .NET Standard compliant library providing data access services for session metadata and telemetry data storage. Session metadata DAL services work with any relational database provider while telemetry data services are defined for InfluxDb. Since it's .NET Standard compliant, Influx Connector can be used by any implementation of .NET or .NET Core and is platform independent.
 
 In order to use Influx Connector, you need to have command-line tools for EF Core installed:
 
-    - Install [.NET Core SDK](https://www.microsoft.com/net/download).
-    - Install EF Core design-time tools by running the following command on Command-line Interface or Terminal.
+- Install [.NET Core SDK](https://www.microsoft.com/net/download).
+- Install EF Core design-time tools by running the following command on Command-line Interface or Terminal.
 
     ```
     dotnet add package Microsoft.EntityFrameworkCore.Design
