@@ -12,7 +12,7 @@
 
 # Saving Data
 
-Telemetry data is saved to various storage implementations such as SqlRace and InfluxDb. This article discusses saving telemetry data to InfluxDb as timeseries data and metadata to MSSQL Server.
+Telemetry data is saved to various storage implementations such as SqlRace and InfluxDb. This article discusses saving telemetry data to InfluxDb as time-series data and metadata to MSSQL Server.
 
 ## InfluxDb Writer
 
@@ -24,20 +24,20 @@ Influx Connector is a .NET Standard compliant library providing DAL abstractions
 
 In order to use Influx Connector, you need to have command-line tools for EF Core installed:
 
-    - Install the [.NET Core SDK](https://www.microsoft.com/net/download).
-    - Install EF Core design-time tools by running the following command on command-line or terminal.
+    - Install [.NET Core SDK](https://www.microsoft.com/net/download).
+    - Install EF Core design-time tools by running the following command on Command-line Interface or Terminal.
 
     ```
     dotnet add package Microsoft.EntityFrameworkCore.Design
     ```
 
-    For more information on setting up EF Core CLI tools refer to [official documentation](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/#install-the-tools).
+For more information on setting up EF Core CLI tools refer to [official documentation](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/#install-the-tools).
 
-All the commands below must be run on command-line interface, PowerShell or Terminal depending on the platform.
+All the commands below must be run on Command-line Interface, PowerShell or Terminal depending on the platform.
 
 1. Setting up database for metadata
 
-Specify the database connection string in `config.json`. For SQL Server:
+Specify the database connection string in `config.json` found in the Influx Connector root directory. For SQL Server:
 
     ```
     {
@@ -49,7 +49,7 @@ Specify the database connection string in `config.json`. For SQL Server:
 
 Relational database provider can be replaced by specifying the appropriate middleware in `SessionsDbContextFactory` class. Default implementation uses MSSQL Server.
 
-Run the following command on command-line or terminal to create the database:
+Run the following command to create the database and the schema:
 
     ```
     dotnet ef database update
@@ -69,11 +69,13 @@ Apply migrations to the database:
     dotnet ef database update
     ```
 
-For more comprehensive guide to managing migrations please refer to [official documentation](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/).
+For a more comprehensive guide on managing migrations, please refer to [EF Core Migrations](https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/).
 
-### InfluxDb Connector
+### InfluxDb Writer
 
 InfluxDb writer subscribes to message brokers and saves telemetry data and session metadata in real-time to time-series and relational databases respectively. InfluxDb Writer is platform-independent and hence can be deployed on Windows or Unix-based systems as a service.
+
+1. Basic usage
 
 In order to use InfluxDb writer, add the relevant configuration in `config.json` file and start service using
 
@@ -81,12 +83,12 @@ In order to use InfluxDb writer, add the relevant configuration in `config.json`
     dotnet MAT.TAP.AAS.InfluxDb.Writer.dll
     ```
 
-A sample configuration and explanation of  settings is given below.
+A sample configuration and an explanation of settings is given below.
 
     ```
     {
         "BrokerList": "xx.xxx.x.xx",
-        "DependencyUrl": "http://[hostname or IP address]/api/dependencies/",
+        "DependencyUrl": "http://[hostname/ip_address]/api/dependencies/",
         "DependencyGroup": "[dependency group identifier]",
         "BatchSize": 100000,
         "ThreadCount": 5,
@@ -94,7 +96,7 @@ A sample configuration and explanation of  settings is given below.
             "[TopicName]": {
             "InfluxConnections": {
                 "*": {
-                "InfluxDbUrl": "http://[hostname or IP address]"
+                "InfluxDbUrl": "http://[hostname/ip_address]"
                 }
             },
             "SqlServerConnectionString": "Server=(localdb)\\MSSQLLocalDB;Initial Catalog=[DatabaseName];User Id=[Username];Password=[Password];"
@@ -104,11 +106,20 @@ A sample configuration and explanation of  settings is given below.
     ```
 
 `BrokerList`: Address of the message broker cluster.
-`DependencyUrl` and `DependencyGroup`: Settings related to ATLAS and session metadata.
+`DependencyUrl` and `DependencyGroup`: Settings related to ATLAS configuration and session metadata.
 `BatchSize`: Number of telemetry samples to be saved to InfluxDb at a time.
-`ThreadCount`: Number of processor threads to be used by Influx Writer. A value larger than 1 can improve throughput of the writer in a machine that supports multithreading.
+`ThreadCount`: Number of processor threads to be used by the Influx Writer. A value larger than 1 can improve throughput of the writer in a machine that supports multithreading.
 `Connections`: Contains all the database connection information organized by the topic (e.g. Kafka topics.)
 `[TopicName]` : Change the value here depending on the message queue topic you want to subscribe to.
-`InfluxConnections`: Contains all the InfluxDb connection strings. Influx writer supports multiple Influx connections per topic (more on labels later). If you plan to use just one InfluxDb instance, use astrix (*) as a wildcard key. This means, all labels under the topic will be saved to InfluxDb specified in `InfluxDbUrl`.
+`InfluxConnections`: Contains all the InfluxDb connection strings. Influx writer supports multiple Influx connections per topic as labels (more on labels later). If you plan to use just one InfluxDb instance, use asterisk symbol (*) as a wildcard key. This means, all telemetry data under the topic will be saved to InfluxDb specified in `InfluxDbUrl` regardless of labels.
 `SqlServerConnectionString`: Connection string for session metadata relational database. Influx Writer supports one metadata connection per topic.
 
+2. Label Supprt
+
+Labels are a concept introduced in Influx Writer to provide support for scaling Influx Writer and the time-series database in a flexible manner. Using labels, you can partition a topic and save data for a single topic in multiple InfluxDb instances using multiple instances of Influx Writers.
+
+An example usage of labels in F1 Racing scenario is to give separate labels for each driver and specify `InfluxDbUrl` per label. This way, you can deploy and manage separate instances of InfluxDb Writers and databases per driver in which each instance will only have to handle data related to the specific label, hence reducing the load on each instance.
+
+3. Configure Logging
+
+Influx Writer has extensive logging and uses Nlog for logger implementation. You can configure logging in the `nlog.config` file or provide your own logging configuration. More information on available configuration options can be found [here](https://github.com/nlog/nlog/wiki/Configuration-file).
