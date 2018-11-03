@@ -36,7 +36,7 @@ For more information on setting up EF Core CLI tools refer to [official document
 
 All the commands below must be run on Command-line Interface, PowerShell or Terminal depending on the platform.
 
-1. Setting up database for metadata
+#### Setting up database for metadata
 
 Specify the database connection string in `config.json` found in the Influx Connector root directory. For SQL Server:
 
@@ -52,7 +52,7 @@ Run the following command to create the database and the schema:
 
     dotnet ef database update
 
-2. Customizing metadata model
+#### Customizing metadata model
 
 Modify the `SessionsDbContext` class and create the migrations:
 
@@ -68,7 +68,7 @@ For a more comprehensive guide on managing migrations, please refer to [EF Core 
 
 InfluxDb writer subscribes to message brokers and saves telemetry data and session metadata in real-time to time-series and relational databases respectively. InfluxDb Writer is platform-independent and hence can be deployed on Windows or Unix-based systems as a service.
 
-1. Basic usage
+#### Basic usage
 
 In order to use InfluxDb writer, add the relevant configuration in `config.json` file and start service using
 
@@ -103,12 +103,12 @@ A sample configuration and an explanation of settings is given below.
 `InfluxConnections`: Contains all the InfluxDb connection strings. Influx writer supports multiple Influx connections per topic as labels (more on labels later). If you plan to use just one InfluxDb instance, use asterisk symbol (*) as a wildcard key. This means, all telemetry data under the topic will be saved to InfluxDb specified in `InfluxDbUrl` regardless of labels.
 `SqlServerConnectionString`: Connection string for session metadata relational database. Influx Writer supports one metadata connection per topic.
 
-2. Label Supprt
+#### Label Supprt
 
 Labels are a concept introduced in Influx Writer to provide support for scaling Influx Writer and the time-series database in a flexible manner. Using labels, you can partition a topic and save data for a single topic in multiple InfluxDb instances using multiple instances of Influx Writers.
 
 An example usage of labels in F1 Racing scenario is to give separate labels for each driver and specify `InfluxDbUrl` per label. This way, you can deploy and manage separate instances of InfluxDb Writers and databases per driver in which each instance will only have to handle data related to the specific label, hence reducing the load on each instance.
 
-3. Configure Logging
+#### Configure Logging
 
 Influx Writer has extensive logging and uses Nlog for logger implementation. You can configure logging in the `nlog.config` file or provide your own logging configuration. More information on available configuration options can be found [here](https://github.com/nlog/nlog/wiki/Configuration-file).
