@@ -9,7 +9,7 @@
 - [**Querying Metadata**](/docs/Metadata.md)<br>
 - [**Consuming Data**](/docs/ConsumingData.md)<br>
 - [**Views**](/docs/Views.md)<br>
-
+- [**Saving Data**](/docs/InfluxWriter.md)<br>
 
 Consuming Data
 =====================
