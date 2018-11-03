@@ -17,7 +17,7 @@ Telemetry data is saved to various storage implementations such as SqlRace and I
 
 ## InfluxDb Writer
 
-InfluxDb Writer consists of two components: Influx Connector and the Writer.
+InfluxDb Writer consists of two components: [Influx Connector](#influxdb-connector) and the [Influx Writer](#influxdb-writer-1).
 
 ### InfluxDb Connector
 
