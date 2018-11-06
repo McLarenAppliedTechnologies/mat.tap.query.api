@@ -64,31 +64,24 @@ In order to use IdentityServer, add the relevant configuration in `appConfigurat
 
 A sample configuration and an explanation of settings is given below.
 
-    {
-        "BrokerList": "xx.xxx.x.xx",
-        "DependencyUrl": "http://[hostname/ip_address]/api/dependencies/",
-        "DependencyGroup": "[dependency group identifier]",
-        "BatchSize": 100000,
-        "ThreadCount": 5,
-        "InitializeDatabase": true,
-        "Connections": {
-            "[TopicName]": {
-            "InfluxConnections": {
-                "*": {
-                "InfluxDbUrl": "http://[hostname/ip_address]"
-                }
-            },
-            "SqlServerConnectionString": "Server=(localdb)\\MSSQLLocalDB;Initial Catalog=[DatabaseName];User Id=[Username];Password=[Password];"
-            }
-        }
+```
+{
+  "ConnectionStrings": {
+    "IdentityDatabase": "server=.\\SQLEXPRESS;Initial Catalog=MAT-TAP-IdentityServer;User Id=test;Password=test;"
+  },
+  "InitializeDatabase": true,
+  "Logging": {
+    "IncludeScopes": false,
+    "LogLevel": {
+      "Default": "Debug",
+      "System": "Information",
+      "Microsoft": "Information"
     }
+  },
+  "OAuthServer": "http://localhost:5000"
+}
+```
 
-- `BrokerList`: Address of the message broker cluster.
-- `DependencyUrl` and `DependencyGroup`: Settings related to ATLAS configuration and session metadata.
-- `BatchSize`: Number of telemetry samples to be saved to InfluxDb at a time.
-- `ThreadCount`: Number of processor threads to be used by the Influx Writer. A value larger than 1 can improve throughput of the writer in a machine that supports multithreading.
-- `InitializeDatabase`: True to initialize databases configured in connections section.
-- `Connections`: Contains all the database connection information organized by the topic (e.g. Kafka topics.)
-- `[TopicName]` : Change the value here depending on the message queue topic you want to subscribe to.
-- `InfluxConnections`: Contains all the InfluxDb connection strings. Influx writer supports multiple InfluxDb connections per topic under [labels](#label-supprt). If you plan to use just one InfluxDb instance, use asterisk symbol (*) as a wildcard key. This means, all telemetry data under the topic will be saved to InfluxDb specified in `InfluxDbUrl` regardless of the label.
-- `SqlServerConnectionString`: Connection string for session metadata relational database. Influx Writer supports one metadata connection per topic.
+- `OAuthServer`: Address of the OAuthServer for authorization (User CRUD API). If you accessing API from outside using external IP adress you might need to put external address here.
+- `InitializeDatabase`: True to initialize database configured in connections section.
+- `ConnectionStrings`: SQL Server connection string to Identity server storage.
