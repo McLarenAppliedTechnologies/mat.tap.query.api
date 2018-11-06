@@ -5,6 +5,7 @@
 ### Table of Contents
 - [**Introduction**](/README.md)<br>
 - [**Getting started**](/docs/GettingStarted.md)<br>
+- [**Identity server**](/docs/IdentityServer.md)<br>
 - [**Authorization**](/docs/Authorization.md)<br>
 - [**Querying Metadata**](/docs/Metadata.md)<br>
 - [**Consuming Data**](/docs/ConsumingData.md)<br>
