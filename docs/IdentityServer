@@ -1,3 +1,19 @@
+# ![logo](/docs/branding.bmp) Telemetry Analytics API
+
+![Build Status](https://mat-ocs.visualstudio.com/Telemetry%20Analytics%20Platform/_apis/build/status/MAT.TAP.TelemetryAnalytics.API/MAT.TAP.TelemetryAnalytics.API%20-%20Pull%20Request%20Gateway?branchName=develop)
+
+### Table of Contents
+- [**Introduction**](/README.md)<br>
+- [**Getting started**](/docs/GettingStarted.md)<br>
+- [**Authorization**](/docs/Authorization.md)<br>
+- [**Querying Metadata**](/docs/Metadata.md)<br>
+- [**Consuming Data**](/docs/ConsumingData.md)<br>
+- [**Views**](/docs/Views.md)<br>
+
+# Identity server
+
+TODO: some generic description
+
 ### Deployment
 #### .NET Core runtime
 First you need to install .NET Core 2.1 runtime. You can donwload it [here](https://www.microsoft.com/net/download/dotnet-core/2.1). Example for Ubuntu 18.04 LTE: 
@@ -12,7 +28,7 @@ sudo apt-get --yes install aspnetcore-runtime-2.1
 ```
 
 #### Daemon installation
-One the examples how to run InfluxDb writer is systemd daemon service. In the release bundle, there is a shell script **daemon_deploy.sh** for daemon installation. 
+One the examples how to run Identity server is systemd daemon service. In the release bundle, there is a shell script **daemon_deploy.sh** for daemon installation. 
 
 Before you run it, execute following commands:
 ```
@@ -28,23 +44,23 @@ Then run:
 You can verify it by:
 
 ```
-journalctl --unit MAT.TAP.AAS.InfluxDb.Writer.service --follow -n 100
+journalctl --unit MAT.TAP.IdentityServer.service --follow -n 100
 ```
 
 or start and stop by 
 
 ```
-sudo systemctl stop MAT.TAP.AAS.InfluxDb.Writer 
-sudo systemctl start MAT.TAP.AAS.InfluxDb.Writer 
+sudo systemctl stop MAT.TAP.IdentityServer.Writer 
+sudo systemctl start MAT.TAP.IdentityServer.Writer 
 ```
 
-or configure your config in /opt/MAT.TAP.AAS.InfluxDb.Writer/config.json
+or configure your config in /opt/MAT.TAP.IdentityServer/config.json
 
 #### Basic usage
 
-In order to use InfluxDb writer, add the relevant configuration in `config.json` file and start service using
+In order to use IdentityServer, add the relevant configuration in `appConfiguration.Production.json` file and start service using
 
-    dotnet MAT.TAP.AAS.InfluxDb.Writer.dll
+    dotnet MAT.TAP.AAS.IdentityServer.dll --urls="http://*:5000"
 
 A sample configuration and an explanation of settings is given below.
 
