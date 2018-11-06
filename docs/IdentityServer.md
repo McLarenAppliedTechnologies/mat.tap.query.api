@@ -82,6 +82,6 @@ A sample configuration and an explanation of settings is given below.
 }
 ```
 
-- `OAuthServer`: Address of the OAuthServer for authorization (User CRUD API). If you accessing API from outside using external IP adress you might need to put external address here.
-- `InitializeDatabase`: True to initialize database configured in connections section.
+- `OAuthServer`: Address of the OAuthServer for authorization (User CRUD API). **If you accessing API from outside using external IP adress you might need to put external address here.**
+- `InitializeDatabase`: True to initialize database configured in ConnectionStrings section.
 - `ConnectionStrings`: SQL Server connection string to Identity server storage.
