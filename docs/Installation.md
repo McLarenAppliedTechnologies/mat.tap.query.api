@@ -6,7 +6,7 @@
 - [**Introduction**](/README.md)<br>
 - [**Installation**](/docs/Installation.md)<br>
 - [**Getting started**](/docs/GettingStarted.md)<br>
-- [**Identity server**](/docs/IdentityServer.md)<br>
+- [**Identity Server**](/docs/IdentityServer.md)<br>
 - [**Authorization**](/docs/Authorization.md)<br>
 - [**Querying Metadata**](/docs/Metadata.md)<br>
 - [**Consuming Data**](/docs/ConsumingData.md)<br>
