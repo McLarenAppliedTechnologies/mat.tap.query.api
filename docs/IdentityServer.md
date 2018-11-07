@@ -21,7 +21,7 @@ Identity Server implements OpenID Connect and provides authentication services f
 
 ### Deployment
 #### .NET Core runtime
-First you need to install .NET Core 2.1 runtime. You can donwload it [here](https://www.microsoft.com/net/download/dotnet-core/2.1). Example for Ubuntu 18.04 LTE: 
+First you need to install .NET Core 2.1 runtime. You can download it [here](https://www.microsoft.com/net/download/dotnet-core/2.1). Example for Ubuntu 18.04 LTE: 
 
 ```
 wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
@@ -33,7 +33,7 @@ sudo apt-get --yes install aspnetcore-runtime-2.1
 ```
 
 #### Daemon installation
-One the examples how to run Identity server is systemd daemon service. In the release bundle, there is a shell script **daemon_deploy.sh** for daemon installation. 
+One way to run Identity Server is using systemd daemon service. In the release bundle, there is a shell script **daemon_deploy.sh** for daemon installation. 
 
 Before you run it, execute following commands:
 ```
@@ -91,7 +91,7 @@ A sample configuration and an explanation of settings is given below.
 - `InitializeDatabase`: True to initialize database configured in ConnectionStrings section.
 - `ConnectionStrings`: SQL Server connection string to Identity server storage.
 
-#### User Management
+### User Management
 
 Identity Server exposes several resources under `/users` path to manage TAPI user accounts.
 
