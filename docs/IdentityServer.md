@@ -54,7 +54,7 @@ sudo systemctl stop MAT.TAP.IdentityServer.Writer
 sudo systemctl start MAT.TAP.IdentityServer.Writer 
 ```
 
-or configure your config in /opt/MAT.TAP.IdentityServer/config.json
+or configure your config in /opt/MAT.TAP.IdentityServer/appConfiguration.Production.json
 
 #### Basic usage
 
