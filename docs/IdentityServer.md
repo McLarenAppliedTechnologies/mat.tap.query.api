@@ -134,7 +134,7 @@ Url Mask:
 
 ```
 GET api/{apiVersion}/users/{id}
-```
+ ```
 
 Example:
 
@@ -170,7 +170,7 @@ Request Body:
 
 ```
 {
-	"userName": "test",
+  "userName": "test",
   "validFrom": "2018-10-02T14:42:15.3909783",
   "validTo": "2018-12-02T14:42:15.391184",
   "password": "testT1@"
