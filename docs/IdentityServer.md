@@ -87,7 +87,7 @@ A sample configuration and an explanation of settings is given below.
 }
 ```
 
-- `OAuthServer`: Address of the OAuthServer for authorization (User CRUD API). **If you accessing API from outside using external IP adress you might need to put external address here.**
+- `OAuthServer`: Address of the OAuthServer for authorization (User CRUD API). **If you are accessing API from outside using external IP address you might need to put external address here.**
 - `InitializeDatabase`: True to initialize database configured in ConnectionStrings section.
 - `ConnectionStrings`: SQL Server connection string to Identity server storage.
 
@@ -95,7 +95,7 @@ A sample configuration and an explanation of settings is given below.
 
 Identity Server exposes several resources under `/users` path to manage TAPI user accounts.
 
-##### Get Users
+#### Get Users
 
 Url Mask:
 
@@ -128,7 +128,7 @@ Result:
 ]
 ```
 
-##### Get User by Id
+#### Get User by Id
 
 Url Mask:
 
@@ -152,7 +152,7 @@ Result:
 }
 ```
 
-##### Create New User
+#### Create New User
 
 Url Mask:
 
@@ -188,7 +188,7 @@ Result:
 }
 ```
 
-##### Update Existing User
+#### Update Existing User
 
 Url Mask:
 
@@ -215,7 +215,7 @@ Request Body:
 
 Important: You need to provide user id and username in request body.
 
-##### Reset Password
+#### Reset Password
 
 Resetting password is similar to updating an existing user. However, in addition to user Id and username,  you need to also provide old password for validation.
 
@@ -242,7 +242,7 @@ Request Body:
 }
 ```
 
-##### Delete User
+#### Delete User
 
 Url Mask:
 
