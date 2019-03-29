@@ -699,6 +699,12 @@ Laps
 ====  
 
 The ```/sessions/{sessionKey}/laps``` endpoint gives you access to information related to the **laps** of a specific session.
+This endpoint provides a set of optional parameters.
+
+| Parameter name | Description                                                 | Example           |  
+|----------------|-------------------------------------------------------------|-------------------|  
+| filter         | It allows filtering on the results.                         | number;ge;10      |
+| order          | It allows ordering of the results.                          | number:desc       |
 
 ### <ins>Query all laps from a given session</ins>
 
