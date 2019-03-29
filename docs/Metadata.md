@@ -299,7 +299,7 @@ Result
 Ordering
 ------
 
-To a collection of data is also provided the option of ordering the requested data set. The properties can be ordered by asc or desc.
+To a collection of data is also provided with the option of ordering the requested data set. The properties can be ordered by asc or desc.
 
 #### Property order construction
 

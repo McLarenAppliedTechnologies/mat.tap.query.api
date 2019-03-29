@@ -24,7 +24,7 @@
 	- An alternative way to test this API is using Swagger UI that it's embedded in the server. Refer to [Swagger](#swagger) section of this documentation for more information on how to use it.
 
 4. Data Explorer UI.
-	- A web based application that allows to visualize data ingested from the API, providing a set of features like aggregations and filtering.
+	- A web-based application that allows visualizing data ingested from the API, providing a set of features like aggregations and filtering.
 	
 ## Connections
 
@@ -136,7 +136,7 @@ Result:
 ```
 
 - `topicName` is the name of the topic used to stream data.
-- `label` label can be used to split sessions within a topic. *Note: If no label is specified than this will be used as the default one.*
+- `label` label can be used to split sessions within a topic. *Note: If no label is specified then this will be used as the default one.*
 - `influxDbDatabase` is the name of the influx db database.
 - `influxDbUrl` is the address of the InfluxDb instance used to store data.
 - `measurementName` is the name of the measurement used to store parameter samples within the influx database. Good practice to use topic name and label combination (without special characters), but it can be anything.
