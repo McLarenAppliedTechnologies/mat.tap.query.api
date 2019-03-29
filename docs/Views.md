@@ -1,7 +1,5 @@
 # ![logo](/docs/branding.bmp) Telemetry Analytics API
 
-![Build Status](https://mat-ocs.visualstudio.com/Telemetry%20Analytics%20Platform/_apis/build/status/MAT.TAP.TelemetryAnalytics.API/MAT.TAP.TelemetryAnalytics.API%20-%20Pull%20Request%20Gateway?branchName=develop)
-
 ### Table of Contents
 - [**Introduction**](/README.md)<br>
 - [**Installation**](/docs/Installation.md)<br>

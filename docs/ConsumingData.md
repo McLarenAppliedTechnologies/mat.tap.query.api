@@ -14,311 +14,74 @@
 Consuming Data
 =====================
 
-URIs for consuming data is grouped under two namespaces: `/data` and `/table/{frequency}/data`. The difference between the two paths is that resources under `/data` works with both InfluxDb and SqlRace while `/table/{frequency}/data` resources currently only support SqlRace as the backing storage.
+This section describes what endpoints are available and how to consume parameter data.<br />
+URIs for consuming data are grouped under the namespace `/data`.<br />
+It is possible to consume data using the api from either InfluxDB or SqlRace, being possible to retrieve the data at raw rate or at a given frequency in either case.
 
-## Differences between the two namespaces
-
- - Resources under `/data` namespace gets first-class support from InfluxDb. This means that, if you are using InfluxDb as the backing storage, you gain access to a range of aggregations such as minimum, maximum, median, standard deviation during down-sampling, filtering in both nanoseconds and time of the day.
- - Resources under `/data` namespace gives more flexibility in response formatting. You can request data in either Json format or more optimized Csv format, you  can request time in microseconds or nanoseconds. This flexibility may be more useful if your client is web-based.
- - Resources under `/table/{frequency}/data` namespace enables you to query multiple parameters across multiple sessions at a time while `/data` only allows you to query one parameter from a single parameter at time (support for multiple parameters under `/data` is in the roadmap).
- - Resources under `/table/{frequency}/data` URIs also give access to some extra resources such as grouped data and time ranges which are currently not available for InfluxDb storage queries.
+- When using <ins>InfluxDb</ins> as the backing data storage, a wide variety of aggregations are supported, for example: Count, Mean, Median, Sum, First, Last, Max, Min, Stddev. *NOTE: Distinct is currently not supported for multiple parameters*
+- When using <ins>SqlRace</ins> as the backing data storage, First, Mean, Min, Max aggregations are supported.
+- The resource `/data/aggregate` is only supported by InfluxDB backing data storage.
+- All resources under `/data` for both data storages provide different response formats. All endpoints support both json and csv, by specifying header Accept-Type as "application/json" or "text/csv", the later one being more optimized for downloading large amounts of parameter data. This flexible approach allows for a data format to be chosen given the technical requirements of the client application (e.g. web applications). Both data storages allow you to query one or multiple parameters for a given session.
 
 ## Consuming Parameter Data
 
-You can consume parameter data using `/data` endpoint. For resources under `/data` path, two url masks are available for querying data. One to query with the frequency of data specified and one without. Parameter data resource supports content types `application/json` and `text/csv` (default). Latter is more optimized for downloading large amounts of parameter data.
+It is possible to consume parameter data using `/data` endpoint. For resources under `/data` path, two url masks are available for querying data.
+
 
 ### Base url masks
 
-Query with frequency:
+Querying at raw rate:
 
 ```
-GET api/{apiVersion}/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter};{aggregation}/{frequency}/data
-```
-
-And querying without specifying frequency:
-
-```
-GET api/{apiVersion}/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter}/data
+GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1,parameter_2,...,parameter_n}/data
 ```
 
 ### Url parameters
 
-| Parameter name | Description                                                                                         | Default value | Example     |
-|----------------|-----------------------------------------------------------------------------------------------------|---------------|-------------|
-| connection     | Connection friendly name.                                                                           |               | SQLRACE01   |
-| sessionKey     | Session Key.                                                                                        |               | 016fa61e-33e2-7e85-1bc9-4ab56c668136 |
-| parameter      | Name of the parameter                                                                               |               | vCar        |
-| aggregation    | Optional aggregation function separated by a semicolon `;`. *Do not add semicolon if you are not specifying an aggregation.* | `mean`  | ;max    |
-| frequency      | Frequency of the results in Hz.                                                                     |               | 10          |
+| Parameter name | Description                                                                                         |    Example                              |
+|----------------|-----------------------------------------------------------------------------------------------------|-----------------------------------------|
+| connection     | Connection name.                                                                                    |    SQLRACE01                            |
+| sessionKey     | Session Key.                                                                                        |    016fa61e-33e2-7e85-1bc9-4ab56c668136 |
+| parameter      | Name(s) of the parameter(s). *Multiple parameters can be requested by separating them with a comma* |    vCar:Chassis, gLat:Chassis           |
 
-### Optional parameters
+<br />
 
-| Parameter name | Description                                                                                                  | Default value | Example     |
-|----------------|--------------------------------------------------------------------------------------------------------------|---------------|-------------|
-| from           | Filters data in session by time of day. All data returned would have a time stamp after the specified time.  |    `null`     | 10:34       |
-| fromNanos      | Filters data in session by time in nanoseconds since midnight. All data returned would have a time stamp after the specified time.| `null` | 10:34  |
-| to             | Filters data in session by time. All data returned would have a time stamp before the specified time.        |    `null`     | 10:50       |
-| toNanos        | Filters data in session by time in nanoseconds since midnight. All data returned would have a time stamp before the specified time. | `null` | 10:50 |
-| lap            | Filters data for specified lap in session.                                                                   |    `null`     | 3           |
-| filter         | Generic filter expression describing filters.                                                                |    `null`     | value;ge;300 |
-| page           | Index of page returned in result (0 is first page)                                                           |      0        | 3           |
-| pageSize       | Size of one page.                                                                                            |     200       | 50          |
-| timeUnit       | Units of time. Use `Ns` for nanoseconds and `Ms` for microseconds.                                           |      `Ns`     | `Ms`        |
-| groupBy        | Groups queries by fields (Only supported for InfluxDb storage). Use `*` to group by all available fields.    |     `null`    | `groupBy=lapnumber&groupBy=sessionId` |
-
-#### Query Parameter Data
-
-Mask
-```
-GET api/{apiVersion}/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter};{aggregation}/{frequency}/data
-```
-
-Example
-```
-GET api/v1/connections/M800960/sessions/64192714-90fe-4865-a191-a6887e465184/parameters/vCar;mean/10/data?from=11:15&to=11:20&filter=vCar;gt;100,vCar;le;150
-```
-
-Csv Result:
-```
-time,tagValues,vCar
-1549534712000000000,lapnumber=1l;sessionId=64192714-90fe-4865-a191-a6887e465184;topic=TestTopic,1.2
-1549534712100000000,lapnumber=1l;sessionId=64192714-90fe-4865-a191-a6887e465184;topic=TestTopic,0.762
-1549534712200000000,lapnumber=1l;sessionId=64192714-90fe-4865-a191-a6887e465184;topic=TestTopic,1.214
-1549534712300000000,lapnumber=1l;sessionId=64192714-90fe-4865-a191-a6887e465184;topic=TestTopic,3.044
-1549534712400000000,lapnumber=1l;sessionId=64192714-90fe-4865-a191-a6887e465184;topic=TestTopic,2.701
-1549534712500000000,lapnumber=1l;sessionId=64192714-90fe-4865-a191-a6887e465184;topic=TestTopic,1.355
-1549534712600000000,lapnumber=1l;sessionId=64192714-90fe-4865-a191-a6887e465184;topic=TestTopic,0.07
-1549534712700000000,lapnumber=1l;sessionId=64192714-90fe-4865-a191-a6887e465184;topic=TestTopic,1.506
-1549534712800000000,lapnumber=1l;sessionId=64192714-90fe-4865-a191-a6887e465184;topic=TestTopic,2.069
-1549534712900000000,lapnumber=1l;sessionId=64192714-90fe-4865-a191-a6887e465184;topic=TestTopic,1.421
-1549534713000000000,lapnumber=1l;sessionId=64192714-90fe-4865-a191-a6887e465184;topic=TestTopic,0.005
-1549534713100000000,lapnumber=1l;sessionId=64192714-90fe-4865-a191-a6887e465184;topic=TestTopic,0.416
-1549534713200000000,lapnumber=1l;sessionId=64192714-90fe-4865-a191-a6887e465184;topic=TestTopic,0.81
-1549534713300000000,lapnumber=1l;sessionId=64192714-90fe-4865-a191-a6887e465184;topic=TestTopic,0.275
-```
-
-Json Result:
-```
-{
-    "parameters":{
-        "vCar":{
-            "timestamps:[
-                1549534712000000000,
-                1549534712100000000,
-                1549534712200000000,
-                1549534712300000000,
-                1549534712400000000,
-                1549534712500000000,
-                1549534712600000000,
-                1549534712700000000,
-                1549534712800000000,
-                1549534712900000000,
-                1549534713000000000,
-                1549534713100000000,
-                1549534713200000000,
-                1549534713300000000
-            ],
-            "values":[
-                1.2,
-                0.7619999999999999,
-                1.214,
-                3.0440000000000005,
-                2.7010000000000005,
-                1.355,
-                0.069999999999999993,
-                1.5059999999999998,
-                2.069,
-                1.421,
-                0.005,
-                0.41600000000000004,
-                0.80999999999999994,
-                0.275
-            ]
-        }
-    }
-}
-```
-
-#### Query Parameter Data Count
-
-Mask
-```
-GET api/{apiVersion}/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter};{aggregation}/{frequency}/data/count
-```
-
-Example
-```
-GET api/v1/connections/M800960/sessions/92ce7a51-83d1-43ec-bb0a-9cda685ca47c/parameters/vCar;mean/10/data/count?from=11:15&to=11:20&filter=vCar;gt;100,vCar;le;150
-```
-
-Result
-```
-5646
-```
-
-#### Aggregate Parameter Data over Tags.
-
-If your backing storage is InfluxDb, you can aggregate parameter data over InfluxDb tags.
-
-Mask
-```
-GET api/v1/connections/{sessionKey}/parameters/{parameter};{aggregation}/data/aggregate?groupBy={tag1}&groupBy={tag2}
-```
-
-Example
-```
-GET api/v1/connections/{sessionKey}/parameters/64192714-90fe-4865-a191-a6887e465184;mean/data/aggregate?groupBy=lapnumber
-```
-
-Result
-```
-time,tagValues,vCar:Chassis
-1549534711876000000,lapnumber=1l,112.335688215992
-1549534711876000000,lapnumber=2l,199.965857988166
-1549534711876000000,lapnumber=3l,225.134068751761
-1549534711876000000,lapnumber=4l,191.609365859654
-1549534711876000000,lapnumber=5l,209.018854306413
-1549534711876000000,lapnumber=6l,179.251327235393
-1549534711876000000,lapnumber=7l,186.329971860711
-```
-
-## Parameters Table
-
-You can consume parameter table data using `/table/{frequency}/data` endpoint.
-
-**Currently not supported by InfluxDb.**
-
-### Base url mask
+Query with frequency:
 
 ```
-GET api/{apiVersion}/connections/{connection name}/sessions/{sessionKey_1,...,sessionKey_n}/parameters/{parameter_1,...,parameter_n}/table/{frequency}/data
+GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1;aggregation_1,...,parameter_n;aggregation_n};/{frequency}/data 
 ```
 
-#### Query Parameter Table Data
+### Url parameters
 
-Mask
-```
-GET api/{apiVersion}/connections/{connection name}/sessions/{sessionKey_1,...,sessionKey_n}/parameters/{parameter_1,...,parameter_n}/table/{frequency}/data
-```
+| Parameter name | Description                                                                                                                  |    Default value    |    Example                              |
+|----------------|------------------------------------------------------------------------------------------------------------------------------|---------------------|-----------------------------------------|
+| connection     | Connection name.                                                                                                             |                     |    SQLRACE01                            |
+| sessionKey     | Session Key.                                                                                                                 |                     |    016fa61e-33e2-7e85-1bc9-4ab56c668136 |
+| parameter      | Name(s) of the parameter(s). *Multiple parameters can be requested by separating them with a comma*                          |                     |    vCar:Chassis, gLat:Chassis           |
+| aggregation    | Optional aggregation function separated by a semicolon `;`. *Do not add semicolon if you are not specifying an aggregation.* |    `mean`           |    ;max                                 |
+| frequency      | Frequency of the results in Hz.                                                                                              |                     |    10                                   |
 
-Example
-```
-GET api/v1/connections/M800960/sessions/92ce7a51-83d1-43ec-bb0a-9cda685ca47c,83ceba51-83d1-43ec-bb0a-10cdv685ca47c/parameters/vCar,BDownshiftRequested/10/data?from=11:15&to=11:20&filter=vCar;gt;100,vCar;le;150
-```
+<br />
 
-#### Query Parameter Table Data Count
+### Optional parameters for both base urls
 
-Mask
-```
-GET api/{apiVersion}/connections/{connection name}/sessions/{sessionKey_1,...,sessionKey_n}/parameters/{parameterName_1,...,parameterName_n}/table/{frequency}/data/count
-```
+Optionally it is possible to filter the data by the following parameters:
 
-Example
-```
-GET api/v1/connections/M800960/sessions/92ce7a51-83d1-43ec-bb0a-9cda685ca47c,83ceba51-83d1-43ec-bb0a-10cdv685ca47c/parameters/vCar,BDownshiftRequested/10/data/count?from=11:15&to=11:20&filter=vCar;gt;100,vCar;le;150
-```
-
-#### Query Time ranges
-
-The ```/table/{frequency}/data/timeranges``` endpoint returns time ranges of result samples. Note that you can use all the parameters and filters used in the rest of endpoints.
-
-Mask
-```
-GET api/{apiVersion}/connections/{connection name}/sessions/{sessionKey_1,...,sessionKey_n}/parameters/{parameter1,parameter2,...,parameter_n}/table/{frequency}/data/timeranges
-```
-
-Example
-```
-GET api/v1/connections/M800960/sessions/92ce7a51-83d1-43ec-bb0a-9cda685ca47c/parameters/vCar/table/10/data/timeranges?from=11:15&to=11:20&filter=vCar;gt;100,vCar;le;150
-```
-
-Result
-```json
-    {
-        "StartTime": "11:19:41.1650000",
-        "EndTime": "11:19:45.0550000",
-        "Span": "00:00:03.8900000"
-    },
-    {
-        "StartTime": "11:19:33.8350000",
-        "EndTime": "11:19:35.1250000",
-        "Span": "00:00:01.2900000"
-    },
-    {
-        "StartTime": "11:19:28.6250000",
-        "EndTime": "11:19:29.7050000",
-        "Span": "00:00:01.0800000"
-    },
-    {
-        "StartTime": "11:19:08.6650000",
-        "EndTime": "11:19:09.8150000",
-        "Span": "00:00:01.1500000"
-    },
-    {
-        "StartTime": "11:18:51.1550000",
-        "EndTime": "11:18:54.6950000",
-        "Span": "00:00:03.5400000"
-    }
-```    
-
-#### Grouped data
-
-The ```/table/{frequency}/data/grouped``` endpoint will return data grouped by time ranges. Note that you can use all the parameters and filters used in the rest of endpoints.
-
-Mask
-```
-GET api/{apiVersion}/connections/{connection name}/sessions/{sessionKey1,...,sessionKey_n}/parameters/{parameter1,parameter2,...,parameter_n}/table/{frequency}/data/grouped
-```
-
-Example
-```
-GET api/v1/connections/M800960/sessions/92ce7a51-83d1-43ec-bb0a-9cda685ca47c/parameters/vCar/table/10/data/grouped?from=11:15&to=11:20&filter=vCar;gt;100,vCar;le;150
-```
-
-Result
-```json
-{
-        "StartTime": "11:19:41.1650000",
-        "EndTime": "11:19:45.0550000",
-        "Span": "00:00:03.8900000",
-        "Values": [
-            {
-                "Time": "11:15:17.1750000",
-                "Values": {
-                    "vCar": 149.97
-                }
-            },
-            {
-                "Time": "11:15:17.1650000",
-                "Values": {
-                    "vCar": 149.18
-                }
-            },
-            {
-                "Time": "11:15:17.1550000",
-                "Values": {
-                    "vCar": 149.17
-                }
-            },
-            {
-                "Time": "11:15:17.1450000",
-                "Values": {
-                    "vCar": 149.67
-                }
-            },
-            {
-                "Time": "11:15:17.1350000",
-                "Values": {
-                    "vCar": 149.66
-                }
-            }
-		]
-}
-```
+| Parameter name | Description                                                                                                                         |    Default value    |    Example                               |
+|----------------|-------------------------------------------------------------------------------------------------------------------------------------|---------------------|------------------------------------------|
+| from           | Filters data in session by time in microseconds or nanoseconds. All data returned would have a time stamp after the specified time. |    `null`           |    1546347600/1546347600000              |
+| to             | Filters data in session by time in microseconds or nanoseconds. All data returned would have a time stamp before the specified time.|    `null`           |    1546348200/1546348200000              |
+| lap            | Filters data for specified lap in session.                                                                                          |    `null`           |    3                                     |
+| filter         | Generic filter expression describing filters.                                                                                       |    `null`           |    vCar:Chassis;ge;300                   |
+| page           | Index of page returned in result (0 is first page)                                                                                  |      0              |    3                                     |
+| pageSize       | Size of one page.                                                                                                                   |    `null`           |    50                                    |
+| timeUnit       | Units of time. Use `Ns` for nanoseconds and `Ms` for microseconds.                                                                  |      `Ns`           |    `Ms`                                  |
+| groupBy        | Groups queries by fields (Only supported for InfluxDb storage). Use `*` to group by all available fields.                           |    `null`           |    `groupBy=lapnumber&groupBy=sessionId` |
 
 ### More on filtering
 
-Filter is an optional parameter that we can use to filter when consuming data. There are multiple types of filters.
+Filter currently is done upon applying to a specific field the sample mode <ins>Mean</ins>. There are multiple types of filters for example:
 
 #### Filter types
 
@@ -331,7 +94,7 @@ Filter is an optional parameter that we can use to filter when consuming data. T
 | le       | Less than or equal    |
 | ne       | Not equal             |
 
-#### Parameter filter
+#### Parameter filter construction
 
 Structure of one parameter filter is:
 
@@ -342,7 +105,7 @@ Parameter filter url mask
 
 Parameter filter example
 ```
-vCar;gt;300
+vCar:Chassis;gt;300
 ```
 
 Example of filtering values that have vCar between 100 and 150 kph. 
@@ -352,110 +115,494 @@ Filter setting example
 vCar:Chassis;gt;100,vCar:Chassis;le;150
 ```
 
-Note that some paremeters have a colon ( : ) in, so we use semicolons ( ; ) for the filtering.
+Note that some parameters have a colon ( : ) in, so we use semicolons ( ; ) for the filtering.
 
+#### Query Parameter Data
 
-### More on querying multiple sessions table data
-
-All data queries can be done over multiple sessions for SqlRace data (InfluxDb data support for this feature is in the roadmap).
-
-Mask
+Endpoint
 ```
-GET api/{apiVersion}/connections/{connection name}/sessions/{sessionKey1,sessionKey2,...,sessionKeyN}/parameters/{parameter1,parameter2,...,parameter_n}/table/{frequency}/data
+GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1,parameter_2,...,parameter_n}/data
 ```
 
 Example
 ```
-GET api/v1/connections/M800960/sessions/92ce7a51-83d1-43ec-bb0a-9cda685ca47c,asdsad199-16155a-43ec-bb0a-12sadsa23a/parameters/vCar/table/10/data?from=11:15&to=11:20&filter=vCar:Chassis;gt;100,vCar:Chassis;le;150
+GET api/v1/connections/Connection/sessions/64192714-90fe-4865-a191-a6887e465184/parameters/vCar:Chassis;mean,gLat:Chassis;mean/data?pageSize=10
 ```
 
-Result
-```json
-[
+Csv Result:
+```
+time,tagValues,vCar:Chassis,gLat:Chassis
+1549534712083000000,sessionId=64192714-90fe-4865-a191-a6887e465184,1.2,NaN
+1549534712093000000,sessionId=64192714-90fe-4865-a191-a6887e465184,1.2,NaN
+1549534712103000000,sessionId=64192714-90fe-4865-a191-a6887e465184,1.15,NaN
+1549534712113000000,sessionId=64192714-90fe-4865-a191-a6887e465184,1.11,NaN
+1549534712123000000,sessionId=64192714-90fe-4865-a191-a6887e465184,1.11,NaN
+1549534712133000000,sessionId=64192714-90fe-4865-a191-a6887e465184,1.15,NaN
+1549534712143000000,sessionId=64192714-90fe-4865-a191-a6887e465184,1.21,NaN
+1549534712153000000,sessionId=64192714-90fe-4865-a191-a6887e465184,1.26,NaN
+1549534712163000000,sessionId=64192714-90fe-4865-a191-a6887e465184,0.46,NaN
+1549534712167000000,sessionId=64192714-90fe-4865-a191-a6887e465184,NaN,0.025
+```
+
+Json Result:
+```Json
+{
+  "parameters": {
+    "vCar:Chassis": {
+      "timestamps": [
+        1549534712083000000,
+        1549534712093000000,
+        1549534712103000000,
+        1549534712113000000,
+        1549534712123000000,
+        1549534712133000000,
+        1549534712143000000,
+        1549534712153000000,
+        1549534712163000000
+      ],
+      "values": [
+        1.2,
+        1.2,
+        1.15,
+        1.11,
+        1.11,
+        1.15,
+        1.21,
+        1.26,
+        0.46
+      ]
+    },
+    "gLat:Chassis": {
+      "timestamps": [
+        1549534712167000000
+      ],
+      "values": [
+        0.025
+      ]
+    }
+  }
+}
+```
+
+#### Query Parameter Data Frequency
+
+## Query Parameter Data Frequency with a timestamp range
+
+It is demonstrated in this section several requests and combinations of the filtering capabilities of the API. All combinations are possible and these are also available to be requested without frequency as well.
+
+Endpoint
+```
+GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
+```
+
+Example
+```
+GET api/v1/connections/Connection/sessions/64192714-90fe-4865-a191-a6887e465184/parameters/vCar:Chassis;mean,vCar:Chassis;max,gLat:Chassis;mean/10/data?pageSize=10&from=1549534714876000000&to=1549572500653000000
+```
+
+Csv Result:
+```
+time,tagValues,Mean(vCar:Chassis),Max(vCar:Chassis),Mean(gLat:Chassis)
+1549534714800000000,,0,0,0.014
+1549534714900000000,,0,0,-0.00525
+1549534715000000000,,0,0,0.00475
+1549534715100000000,,0,0,0.00625
+1549534715200000000,,0,0,0.00475
+1549534715300000000,,0,0,0.00075
+1549534715400000000,,0,0,0.0045
+1549534715500000000,,0,0,0.00575
+1549534715600000000,,0,0,0.0085
+1549534715700000000,,0,0,0.00575
+```
+
+Json Result:
+```Json
+{
+  "timestamps": [
+    1549534714800000000,
+    1549534714900000000,
+    1549534715000000000,
+    1549534715100000000,
+    1549534715200000000,
+    1549534715300000000,
+    1549534715400000000,
+    1549534715500000000,
+    1549534715600000000,
+    1549534715700000000
+  ],
+  "values": {
+    "Mean(vCar:Chassis)": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Max(vCar:Chassis)": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "Mean(gLat:Chassis)": [
+      0.013999999999999999,
+      -0.0052499999999999995,
+      0.004749999999999999,
+      0.00625,
+      0.004749999999999999,
+      0.00075000000000000012,
+      0.0045,
+      0.0057500000000000008,
+      0.0084999999999999989,
+      0.005749999999999999
+    ]
+  }
+}
+```
+
+## Query Parameter Data Frequency with a specific time unit (nanoseconds)
+
+Endpoint
+```
+GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
+```
+
+Example
+```
+GET api/v1/connections/Connection/sessions/64192714-90fe-4865-a191-a6887e465184/parameters/vCar:Chassis;mean,gLat:Chassis;mean/10/data?pageSize=10&timeUnit=ns
+```
+
+Csv Result:
+```
+time,tagValues,Mean(vCar:Chassis),Mean(gLat:Chassis)
+1549534712000000000,,1.2,NaN
+1549534712100000000,,0.762,0.00142857142857143
+1549534712200000000,,1.214,0.002
+1549534712300000000,,3.044,0.0055
+1549534712400000000,,2.701,0.0065
+1549534712500000000,,1.355,0.00375
+1549534712600000000,,0.07,0.0005
+1549534712700000000,,1.506,0.00075
+1549534712800000000,,2.069,0.0015
+1549534712900000000,,1.421,0.00175
+```
+
+Json Result
+```Json
+{
+  "timestamps": [
+    1549534712000000000,
+    1549534712100000000,
+    1549534712200000000,
+    1549534712300000000,
+    1549534712400000000,
+    1549534712500000000,
+    1549534712600000000,
+    1549534712700000000,
+    1549534712800000000,
+    1549534712900000000
+  ],
+  "values": {
+    "Mean(vCar:Chassis)": [
+      1.2,
+      0.7619999999999999,
+      1.214,
+      3.0440000000000005,
+      2.7010000000000005,
+      1.355,
+      0.069999999999999993,
+      1.5059999999999998,
+      2.069,
+      1.421
+    ],
+    "Mean(gLat:Chassis)": [
+      "NaN",
+      0.0014285714285714288,
+      0.002,
+      0.0055,
+      0.0065000000000000006,
+      0.00375,
+      0.0004999999999999999,
+      0.00075000000000000023,
+      0.0014999999999999994,
+      0.0017500000000000005
+    ]
+  }
+}
+```
+
+## Query Parameter Data Frequency with a filter
+
+Endpoint
+```
+GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
+```
+
+Example
+```
+GET api/v1/connections/Connection/sessions/64192714-90fe-4865-a191-a6887e465184/parameters/vCar:Chassis;mean,gLat:Chassis;mean/10/data?pageSize=10&filter=vCar:Chassis;ge;300 
+```
+
+Csv Result:
+```
+time,tagValues,Mean(vCar:Chassis),Mean(gLat:Chassis)
+1549534949900000000,,300.102,0.0414
+1549534950000000000,,300.728,0.1048
+1549534950100000000,,301.081,0.1378
+1549534950200000000,,302.057,0.1194
+1549534950300000000,,302.341,0.065
+1549534950400000000,,302.818,0.0895
+1549534950500000000,,303.211,-0.0263
+1549534950600000000,,303.808,0.00690000000000001
+1549534950700000000,,304.199,0.0133
+1549534950800000000,,304.743,0.16
+```
+
+Json Result
+```Json
+{
+  "timestamps": [
+    1549534949900000000,
+    1549534950000000000,
+    1549534950100000000,
+    1549534950200000000,
+    1549534950300000000,
+    1549534950400000000,
+    1549534950500000000,
+    1549534950600000000,
+    1549534950700000000,
+    1549534950800000000
+  ],
+  "values": {
+    "Mean(vCar:Chassis)": [
+      300.10200000000003,
+      300.728,
+      301.081,
+      302.05700000000007,
+      302.341,
+      302.818,
+      303.211,
+      303.808,
+      304.19900000000007,
+      304.74300000000005
+    ],
+    "Mean(gLat:Chassis)": [
+      0.041400000000000006,
+      0.10480000000000002,
+      0.13779999999999998,
+      0.11940000000000003,
+      0.065,
+      0.0895,
+      -0.026300000000000007,
+      0.006900000000000006,
+      0.013299999999999992,
+      0.16000000000000003
+    ]
+  }
+}
+```
+
+## Query Parameter Data Frequency with group by
+
+Endpoint
+```
+GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
+```
+
+Example
+```
+GET api/v1/connections/Connection/sessions/64192714-90fe-4865-a191-a6887e465184/parameters/vCar:Chassis/10/data?pageSize=1&groupby=lapnumber
+```
+
+Csv Result:
+```
+time,tagValues,Mean(vCar:Chassis),Mean(gLat:Chassis)
+1549534712000000000,lapnumber=1l,1.2,NaN
+1549535063400000000,lapnumber=2l,NaN,-0.6745
+1549535063200000000,lapnumber=3l,222.256,NaN
+1549535120200000000,lapnumber=4l,289.678571428571,0.764
+1549535201500000000,lapnumber=5l,288.318888888889,1.18677777777778
+1549535275900000000,lapnumber=6l,288.515,1.2145
+1549535362100000000,lapnumber=7l,291.104,1.1925
+```
+
+Json Result
+```Json
+{
+  "timestamps": [
+    1549534712000000000,
+    1549535063400000000,
+    1549535063200000000,
+    1549535120200000000,
+    1549535201500000000,
+    1549535275900000000,
+    1549535362100000000
+  ],
+  "values": {
+    "Mean(vCar:Chassis)": [
+      1.2,
+      "NaN",
+      222.256,
+      289.67857142857144,
+      288.31888888888886,
+      288.515,
+      291.104
+    ],
+    "Mean(gLat:Chassis)": [
+      "NaN",
+      -0.6745,
+      "NaN",
+      0.764,
+      1.1867777777777777,
+      1.2144999999999997,
+      1.1924999999999997
+    ]
+  },
+  "tags": [
     {
-        "Key": "e5d51619-13df-4cb8-b263-940be28aae8f",
-        "Value": [
-            {
-                "StartTime": "12:18:54.6550000",
-                "EndTime": "12:18:57.7550000",
-                "Span": "00:00:03.1000000"
-            },
-            {
-                "StartTime": "12:21:09.7550000",
-                "EndTime": "12:21:15.2550000",
-                "Span": "00:00:05.5000000"
-            },
-            {
-                "StartTime": "12:23:20.4550000",
-                "EndTime": "12:23:25.7550000",
-                "Span": "00:00:05.3000000"
-            },
-            {
-                "StartTime": "12:25:41.1550000",
-                "EndTime": "12:25:47.4550000",
-                "Span": "00:00:06.3000000"
-            },
-            {
-                "StartTime": "12:27:55.4550000",
-                "EndTime": "12:28:01.5550000",
-                "Span": "00:00:06.1000000"
-            },
-            {
-                "StartTime": "12:30:04.9550000",
-                "EndTime": "12:30:08.5550000",
-                "Span": "00:00:03.6000000"
-            }
-        ]
+      "lapnumber": "1l"
     },
     {
-        "Key": "fd309247-66db-41cf-87b9-4760902f3981",
-        "Value": [
-            {
-                "StartTime": "11:32:21.2970000",
-                "EndTime": "11:32:25.0970000",
-                "Span": "00:00:03.8000000"
-            },
-            {
-                "StartTime": "11:33:43.6970000",
-                "EndTime": "11:33:47.7970000",
-                "Span": "00:00:04.1000000"
-            },
-            {
-                "StartTime": "11:37:45.8970000",
-                "EndTime": "11:37:49.2970000",
-                "Span": "00:00:03.4000000"
-            },
-            {
-                "StartTime": "11:39:42.8970000",
-                "EndTime": "11:39:46.4970000",
-                "Span": "00:00:03.6000000"
-            },
-            {
-                "StartTime": "11:42:09.2970000",
-                "EndTime": "11:42:13.4970000",
-                "Span": "00:00:04.2000000"
-            },
-            {
-                "StartTime": "11:43:27.3970000",
-                "EndTime": "11:43:31.4970000",
-                "Span": "00:00:04.1000000"
-            },
-            {
-                "StartTime": "11:45:36.6970000",
-                "EndTime": "11:45:41.0970000",
-                "Span": "00:00:04.4000000"
-            },
-            {
-                "StartTime": "11:48:21.7970000",
-                "EndTime": "11:48:26.8970000",
-                "Span": "00:00:05.1000000"
-            },
-            {
-                "StartTime": "11:50:41.2970000",
-                "EndTime": "11:50:44.3970000",
-                "Span": "00:00:03.1000000"
-            }
-        ]
+      "lapnumber": "2l"
+    },
+    {
+      "lapnumber": "3l"
+    },
+    {
+      "lapnumber": "4l"
+    },
+    {
+      "lapnumber": "5l"
+    },
+    {
+      "lapnumber": "6l"
+    },
+    {
+      "lapnumber": "7l"
+    }
+  ]
+}
+```
+
+#### Query Parameter Data Count
+
+This functionality is available for `/data` with and without frequency.
+
+Endpoint
+```
+GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter};{aggregation}/{frequency}/data/count
+```
+
+Example
+```
+GET api/v1/connections/Connection/sessions/92ce7a51-83d1-43ec-bb0a-9cda685ca47c/parameters/vCar:Chassis;mean,gLat:Chassis;mean/10/data/count
+```
+
+Json Result
+```Json
+[
+    {
+        "name":"Mean(vCar:Chassis)",
+        "count":6236.0
+    },
+    {
+        "name":"Mean(gLat:Chassis)",
+        "count":6291.0
     }
 ]
+```
+
+#### Aggregate Parameter Data over Tags.
+
+If your backing storage is InfluxDb, you can aggregate parameter data over InfluxDb tags.
+
+Endpoint
+```
+GET api/v1/connections/{connections}/sessions/{sessionKey}/parameters/{parameter};{aggregation}/data/aggregate?groupBy={tag1}&groupBy={tag2}
+```
+
+Example
+```
+GET api/v1/connections/Connection/sessions/64192714-90fe-4865-a191-a6887e465184/parameters/vCar:Chassis;mean,gLat:Chassis;mean/data/aggregate?groupBy=lapnumber
+```
+
+Csv Result
+```
+time,tagValues,vCar:Chassis,gLat:Chassis
+1549534711876000000,lapnumber=1l,112.335688215992,0.18400058029484376
+1549534711876000000,lapnumber=2l,199.965857988166,-0.82674907292954236
+1549534711876000000,lapnumber=3l,225.134068751761,0.087585425383542262
+1549534711876000000,lapnumber=4l,191.609365859654,0.2036408483625701
+1549534711876000000,lapnumber=5l,209.018854306413,0.26592772152238897
+1549534711876000000,lapnumber=6l,179.251327235393,0.25245055569364194
+1549534711876000000,lapnumber=7l,186.329971860711,0.52127658846863922
+```
+
+Json Result
+```Json
+{
+  "timestamps": [
+    1549534711876000000,
+    1549534711876000000,
+    1549534711876000000,
+    1549534711876000000,
+    1549534711876000000,
+    1549534711876000000,
+    1549534711876000000
+  ],
+  "values": {
+    "Mean(vCar:Chassis)": [
+      112.335688215992,
+      199.96585798816574,
+      225.13406875176085,
+      191.60936585965354,
+      209.01885430641281,
+      179.25132723539306,
+      186.32997186071083
+    ],
+    "Mean(gLat:Chassis)": [
+      0.18400058029484376,
+      -0.82674907292954236,
+      0.087585425383542262,
+      0.2036408483625701,
+      0.26592772152238897,
+      0.25245055569364194,
+      0.52127658846863922
+    ]
+  },
+  "tags": [
+    {
+      "lapnumber": "1l"
+    },
+    {
+      "lapnumber": "2l"
+    },
+    {
+      "lapnumber": "3l"
+    },
+    {
+      "lapnumber": "4l"
+    },
+    {
+      "lapnumber": "5l"
+    },
+    {
+      "lapnumber": "6l"
+    },
+    {
+      "lapnumber": "7l"
+    }
+  ]
+}
 ```
