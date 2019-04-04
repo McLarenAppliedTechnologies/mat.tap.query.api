@@ -38,11 +38,11 @@ GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{param
 
 ### Url parameters
 
-| Parameter name | Description                                                                                         |    Example                              |
-|----------------|-----------------------------------------------------------------------------------------------------|-----------------------------------------|
-| connection     | Connection name.                                                                                    |    SQLRACE01                            |
-| sessionKey     | Session Key.                                                                                        |    016fa61e-33e2-7e85-1bc9-4ab56c668136 |
-| parameter      | Name(s) of the parameter(s). *Multiple parameters can be requested by separating them with a comma* |    vCar:Chassis, gLat:Chassis           |
+| Parameter name | Description                                                                                         |    Example                                |
+|----------------|-----------------------------------------------------------------------------------------------------|-------------------------------------------|
+| connection     | Connection name.                                                                                    |    `SQLRACE01`                            |
+| sessionKey     | Session Key.                                                                                        |    `016fa61e-33e2-7e85-1bc9-4ab56c668136` |
+| parameter      | Name(s) of the parameter(s). *Multiple parameters can be requested by separating them with a comma* |    `vCar:Chassis, gLat:Chassis`           |
 
 <br />
 
@@ -54,13 +54,13 @@ GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{param
 
 ### Url parameters
 
-| Parameter name | Description                                                                                                                  |    Default value    |    Example                              |
-|----------------|------------------------------------------------------------------------------------------------------------------------------|---------------------|-----------------------------------------|
-| connection     | Connection name.                                                                                                             |                     |    SQLRACE01                            |
-| sessionKey     | Session Key.                                                                                                                 |                     |    016fa61e-33e2-7e85-1bc9-4ab56c668136 |
-| parameter      | Name(s) of the parameter(s). *Multiple parameters can be requested by separating them with a comma*                          |                     |    vCar:Chassis, gLat:Chassis           |
-| aggregation    | Optional aggregation function separated by a semicolon `;`. *Do not add semicolon if you are not specifying an aggregation.* |    `mean`           |    ;max                                 |
-| frequency      | Frequency of the results in Hz.                                                                                              |                     |    10                                   |
+| Parameter name | Description                                                                                                                  |    Default value    |    Example                                |
+|----------------|------------------------------------------------------------------------------------------------------------------------------|---------------------|-------------------------------------------|
+| connection     | Connection name.                                                                                                             |                     |    `SQLRACE01`                            |
+| sessionKey     | Session Key.                                                                                                                 |                     |    `016fa61e-33e2-7e85-1bc9-4ab56c668136` |
+| parameter      | Name(s) of the parameter(s). *Multiple parameters can be requested by separating them with a comma*                          |                     |    `vCar:Chassis, gLat:Chassis`           |
+| aggregation    | Optional aggregation function separated by a semicolon `;`. *Do not add semicolon if you are not specifying an aggregation.* |    `mean`           |    `;max`                                 |
+| frequency      | Frequency of the results in Hz.                                                                                              |                     |    10                                     |
 
 <br />
 
@@ -73,11 +73,59 @@ Optionally it is possible to filter the data by the following parameters:
 | from           | Filters data in session by time in microseconds or nanoseconds. All data returned would have a time stamp after the specified time. |    `null`           |    1546347600/1546347600000              |
 | to             | Filters data in session by time in microseconds or nanoseconds. All data returned would have a time stamp before the specified time.|    `null`           |    1546348200/1546348200000              |
 | lap            | Filters data for specified lap in session.                                                                                          |    `null`           |    3                                     |
-| filter         | Generic filter expression describing filters.                                                                                       |    `null`           |    vCar:Chassis;ge;300                   |
+| filter         | Generic filter expression describing filters.                                                                                       |    `null`           |    `vCar:Chassis;ge;300`                 |
 | page           | Index of page returned in result (0 is first page)                                                                                  |      0              |    3                                     |
 | pageSize       | Size of one page.                                                                                                                   |    `null`           |    50                                    |
 | timeUnit       | Units of time. Use `Ns` for nanoseconds and `Ms` for microseconds.                                                                  |      `Ns`           |    `Ms`                                  |
 | groupBy        | Groups queries by fields (Only supported for InfluxDb storage). Use `*` to group by all available fields.                           |    `null`           |    `groupBy=lapnumber&groupBy=sessionId` |
+
+#### Optional parameters validation
+As mentioned when requesting either raw data or frequency one, it is possible to provide a set of optional parameters. The API will validate the optional parameters provided and in case of failure in binding any of the parameters it will provide a response with a 422 status code (Unprocessable Entity) and a message or a set of messages with the failure errors. <br />
+This validation layer is provided only for API using InfluxDb as data storage. The parameters filter and groupby are excluded from model validation.
+
+##### Query with one wrong parameter
+
+Example
+```
+GET api/v1/connections/Connection/sessions/64192714-90fe-4865-a191-a6887e465184/parameters/vCar:Chassis;mean,gLat:Chassis;mean/data?Lap=test
+```
+
+Json Result:
+```Json
+{
+  "message": "Model state validation failed",
+  "errors": [
+    {
+      "field": "Lap",
+      "message": "The value 'test' is not valid for Lap."
+    }
+  ]
+}
+```
+
+##### Query with multiple wrong parameter 
+
+Example
+```
+GET api/v1/connections/Connection/sessions/64192714-90fe-4865-a191-a6887e465184/parameters/vCar:Chassis;mean,gLat:Chassis;mean/data?page=-1&pageSize=abc
+```
+
+Json Result:
+```Json
+{
+  "message": "Model state validation failed",
+  "errors": [
+    {
+      "field": "Page",
+      "message": "Please enter a positive number"
+    },
+    {
+      "field": "PageSize",
+      "message": "The value 'abc' is not valid for PageSize."
+    }
+  ]
+}
+```
 
 ### More on filtering
 
