@@ -5,6 +5,7 @@
 - [**Installation**](/docs/Installation.md)<br>
 - [**Getting started**](/docs/GettingStarted.md)<br>
 - [**Identity Server**](/docs/IdentityServer.md)<br>
+- [**Authentication**](/docs/Authentication.md)<br>
 - [**Authentication**](/docs/Authorization.md)<br>
 - [**Querying Metadata**](/docs/Metadata.md)<br>
 - [**Consuming Data**](/docs/ConsumingData.md)<br>
@@ -56,7 +57,19 @@ POST /token
 
 Note that unless otherwise configured, your refresh token will change each time you refresh the token. More information about configuring refresh token, refer to [Identity Server](/docs/IdentityServer.md/#create-new-client) section.
 
+# Authorization
 
+TAPI for InfluxDb API supports Role-based access. Currently, the API supports two roles: Admin and Default user. The role-based access control system is implemented using user claims making it more general and flexible. When you first setup Identity Server, an admin account will be automatically create for you as described in [Getting Access Token](#getting-access-token) section.
+
+## Differences between Admin and Default User
+
+Admin user can access all the API resources available while Default user accountis unable or has restricted access to the following resources.
+
+ - User management APIs: Default user can only view information related  to his/her own account. Default user cannot view other user profiles, cannot create/update/delete any user account.
+ - Client management APIs: Default user can register clients under his/her account.
+ - TAPI Resources: Default user can access all TAPI resources with restricted access to connections resource. Under connections resource, a default user can only access connection identifiers. Create/update/delete connections or viewing detailed information of connections such as connection strings requires an Admin account.
+
+ Since, admin account has unrestricted access to all resource, please change the credenntials (username/password) of the default user as soon as possible after setting up the authentication server. Documentation for this can be found at [Identity Server](/docs/IdentityServer.md). Also, follow usual precautions with passwords such as strong password (our API enforces some restrictions around valid passwords) and changing them regularly. Create Default users for normal API usage.
 
 
 
