@@ -5,14 +5,14 @@
 - [**Installation**](/docs/Installation.md)<br>
 - [**Getting started**](/docs/GettingStarted.md)<br>
 - [**Identity Server**](/docs/IdentityServer.md)<br>
-- [**Authorization**](/docs/Authorization.md)<br>
+- [**Authentication**](/docs/Authorization.md)<br>
 - [**Querying Metadata**](/docs/Metadata.md)<br>
 - [**Consuming Data**](/docs/ConsumingData.md)<br>
 - [**Views**](/docs/Views.md)<br>
 
-# Authorization
+# Authentication
 
-This API uses token authentication. You use your username/password to ask the server for an access token, then you include this access token in the header in all requests to the server. Please note that for SqlRace, OAuth server is embedded. Hence, you can use the same API to get the access token as TAPI. However, for InfluxDb API, OAuth server is called Identity Server and is deployed as a separate API. Hence, the address of the token endpoint and Swagger UI should use the hostname and port number of that server. Please refer to the Swagger UI for [Identity Server](/docs/IdentityServer.md) to test the token endpoint. 
+This API supports OAuth2.0 Resource Owner authentication. You use your username/password to ask the server for an access token, which you will include in the headers of all requests to the server. Please note that for SqlRace, OAuth server is embedded. Hence, you can use the same API to get the access token as TAPI. However, for InfluxDb API, OAuth server is called Identity Server and is deployed as a separate API. Hence, the address of the token endpoint and Swagger UI should use the hostname and port number of that server. Please refer to the Swagger UI for [Identity Server](/docs/IdentityServer.md) to test the token endpoint. 
 
 ## Getting Access Token
 
