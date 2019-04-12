@@ -63,13 +63,13 @@ TAPI for InfluxDb API supports Role-based access. Currently, the API supports tw
 
 ## Differences between Admin and Default User
 
-Admin user can access all the API resources available while Default user accountis unable or has restricted access to the following resources.
+Admin user can access all the API resources available while Default user account is unable or has restricted access to the following resources.
 
  - User management APIs: Default user can only view information related  to his/her own account. Default user cannot view other user profiles, cannot create/update/delete any user account.
  - Client management APIs: Default user can register clients under his/her account.
  - TAPI Resources: Default user can access all TAPI resources with restricted access to connections resource. Under connections resource, a default user can only access connection identifiers. Create/update/delete connections or viewing detailed information of connections such as connection strings requires an Admin account.
 
- Since, admin account has unrestricted access to all resource, please change the credenntials (username/password) of the default user as soon as possible after setting up the authentication server. Documentation for this can be found at [Identity Server](/docs/IdentityServer.md). Also, follow usual precautions with passwords such as strong password (our API enforces some restrictions around valid passwords) and changing them regularly. Create Default users for normal API usage.
+ Since, admin account has unrestricted access to all resources, please change the credentials (username/password) of the admin user as soon as possible after setting up the authentication server. Documentation for this can be found at [Identity Server](/docs/IdentityServer.md). Also, follow usual precautions with passwords such as using strong passwords (our API enforces some restrictions on valid passwords) and changing them regularly. Always use default user accounts to use TAPI and only use admin accounts for privileged tasks such as user management.
 
 
 
