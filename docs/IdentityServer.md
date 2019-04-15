@@ -127,13 +127,15 @@ Result:
         "id": "73c06464-54ae-4aa7-8495-6c2733dbd394",
         "userName": "admin",
         "validFrom": "2018-10-02T14:42:15.3909783",
-        "validTo": "2018-12-02T14:42:15.391184"
+        "validTo": "2018-12-02T14:42:15.391184",
+        "role": "Admin"
     },
     {
         "id": "df127e7c-4c60-4344-b065-6d947a226dc7",
         "userName": "bob@example.com",
         "validFrom": "2018-09-02T00:00:00",
-        "validTo": "2018-12-02T00:00:00"
+        "validTo": "2018-12-02T00:00:00",
+        "role": "Default"
     }
 ]
 ```
@@ -159,6 +161,7 @@ Result:
     "userName": "admin",
     "validFrom": "2018-10-02T14:42:15.3909783",
     "validTo": "2018-12-02T14:42:15.391184"
+    "role": "Admin"
 }
 ```
 
@@ -184,6 +187,7 @@ Request Body:
   "validFrom": "2018-10-02T14:42:15.3909783",
   "validTo": "2018-12-02T14:42:15.391184",
   "password": "testT1@"
+  "role": "Default"
 }
 ```
 
@@ -193,10 +197,10 @@ Result:
 {
   "id": "1e958756-40e7-4886-b58f-13055df8847c",
   "userName": "test",
-  "validFrom": "2018-10-02T14:42:15.3909783",
-  "validTo": "2018-12-02T14:42:15.391184"
 }
 ```
+
+Remarks: "role" field is optional. If you do not specify a role,role defaults to "Default" user. In order to create an admin user,set "role" to "Admin".
 
 #### Update Existing User
 
@@ -219,7 +223,8 @@ Request Body:
     "id": "1e958756-40e7-4886-b58f-13055df8847c",
     "userName": "tes1t",
     "validFrom": "2018-10-02T14:42:15.3909783",
-    "validTo": "2018-12-02T14:42:15.391184"
+    "validTo": "2018-12-02T14:42:15.391184",
+    "role": "Default"
 }
 ```
 

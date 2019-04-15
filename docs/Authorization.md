@@ -5,14 +5,15 @@
 - [**Installation**](/docs/Installation.md)<br>
 - [**Getting started**](/docs/GettingStarted.md)<br>
 - [**Identity Server**](/docs/IdentityServer.md)<br>
-- [**Authorization**](/docs/Authorization.md)<br>
+- [**Authentication**](/docs/Authentication.md)<br>
+- [**Authentication**](/docs/Authorization.md)<br>
 - [**Querying Metadata**](/docs/Metadata.md)<br>
 - [**Consuming Data**](/docs/ConsumingData.md)<br>
 - [**Views**](/docs/Views.md)<br>
 
-# Authorization
+# Authentication
 
-This API uses token authentication. You use your username/password to ask the server for an access token, then you include this access token in the header in all requests to the server. Please note that for SqlRace, OAuth server is embedded. Hence, you can use the same API to get the access token as TAPI. However, for InfluxDb API, OAuth server is called Identity Server and is deployed as a separate API. Hence, the address of the token endpoint and Swagger UI should use the hostname and port number of that server. Please refer to the Swagger UI for [Identity Server](/docs/IdentityServer.md) to test the token endpoint. 
+This API supports OAuth2.0 Resource Owner authentication. You use your username/password to ask the server for an access token, which you will include in the headers of all requests to the server. Please note that for SqlRace, OAuth server is embedded. Hence, you can use the same API to get the access token as TAPI. However, for InfluxDb API, OAuth server is called Identity Server and is deployed as a separate API. Hence, the address of the token endpoint and Swagger UI should use the hostname and port number of that server. Please refer to the Swagger UI for [Identity Server](/docs/IdentityServer.md) to test the token endpoint. 
 
 ## Getting Access Token
 
@@ -56,7 +57,19 @@ POST /token
 
 Note that unless otherwise configured, your refresh token will change each time you refresh the token. More information about configuring refresh token, refer to [Identity Server](/docs/IdentityServer.md/#create-new-client) section.
 
+# Authorization
 
+TAPI for InfluxDb API supports Role-based access. Currently, the API supports two roles: Admin and Default user. The role-based access control system is implemented using user claims making it more general and flexible. When you first setup Identity Server, an admin account will be automatically create for you as described in [Getting Access Token](#getting-access-token) section.
+
+## Differences between Admin and Default User
+
+Admin user can access all the API resources available while Default user account is unable or has restricted access to the following resources.
+
+ - User management APIs: Default user can only view information related  to his/her own account. Default user cannot view other user profiles, cannot create/update/delete any user account.
+ - Client management APIs: Default user can register clients under his/her account.
+ - TAPI Resources: Default user can access all TAPI resources with restricted access to connections resource. Under connections resource, a default user can only access connection identifiers. Create/update/delete connections or viewing detailed information of connections such as connection strings requires an Admin account.
+
+ Since, admin account has unrestricted access to all resources, please change the credentials (username/password) of the admin user as soon as possible after setting up the authentication server. Documentation for this can be found at [Identity Server](/docs/IdentityServer.md). Also, follow usual precautions with passwords such as using strong passwords (our API enforces some restrictions on valid passwords) and changing them regularly. Always use default user accounts to use TAPI and only use admin accounts for privileged tasks such as user management.
 
 
 
