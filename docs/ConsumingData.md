@@ -22,11 +22,11 @@ It is possible to consume data using the api from either InfluxDB or SqlRace, be
 - When using <ins>SqlRace</ins> as the backing data storage, First, Mean, Min, Max aggregations are supported.
 - The resource `/data/aggregate` is only supported by InfluxDB backing data storage.
 - All resources under `/data` for both data storages provide different response formats. All endpoints support both json and csv, by specifying header Accept-Type as "application/json" or "text/csv", the later one being more optimized for downloading large amounts of parameter data. This flexible approach allows for a data format to be chosen given the technical requirements of the client application (e.g. web applications). Both data storages allow you to query one or multiple parameters for a given session.
+- When using <ins>InfluxDb</ins> as the backing data storage, it is possible to access session versions using optional query parameters. If a version is not specified, latest version for a specific session is used to query by default.
 
 ## Consuming Parameter Data
 
 It is possible to consume parameter data using `/data` endpoint. For resources under `/data` path, two url masks are available for querying data.
-
 
 ### Base url masks
 
@@ -78,6 +78,7 @@ Optionally it is possible to filter the data by the following parameters:
 | pageSize       | Size of one page.                                                                                                                   |    `null`           |    50                                    |
 | timeUnit       | Units of time. Use `Ns` for nanoseconds and `Ms` for microseconds.                                                                  |      `Ns`           |    `Ms`                                  |
 | groupBy        | Groups queries by fields (Only supported for InfluxDb storage). Use `*` to group by all available fields.                           |    `null`           |    `groupBy=lapnumber&groupBy=sessionId` |
+| sessionVersion | Version of a session to use. If not specified, latest version is used.                                                              |    `null`           |    2    |
 
 #### Optional parameters validation
 As mentioned when requesting either raw data or frequency one, it is possible to provide a set of optional parameters. The API will validate the optional parameters provided and in case of failure in binding any of the parameters it will provide a response with a 422 status code (Unprocessable Entity) and a message or a set of messages with the failure errors. <br />
