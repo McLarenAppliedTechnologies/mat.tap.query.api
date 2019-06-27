@@ -33,7 +33,7 @@ It is possible to consume parameter data using `/data` endpoint. For resources u
 Querying at raw rate:
 
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1,parameter_2,...,parameter_n}/data
+GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters/{parameter_1,parameter_2,...,parameter_n}/data
 ```
 
 ### Url parameters
@@ -41,7 +41,7 @@ GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{param
 | Parameter name | Description                                                                                         |    Example                                |
 |----------------|-----------------------------------------------------------------------------------------------------|-------------------------------------------|
 | connection     | Connection name.                                                                                    |    `SQLRACE01`                            |
-| sessionKey     | Session Key.                                                                                        |    `016fa61e-33e2-7e85-1bc9-4ab56c668136` |
+| sessionId      | Session Id.                                                                                        |    `016fa61e-33e2-7e85-1bc9-4ab56c668136` |
 | parameter      | Name(s) of the parameter(s). *Multiple parameters can be requested by separating them with a comma* |    `vCar:Chassis, gLat:Chassis`           |
 
 <br />
@@ -49,7 +49,7 @@ GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{param
 Query with frequency:
 
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1;aggregation_1,...,parameter_n;aggregation_n};/{frequency}/data 
+GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters/{parameter_1;aggregation_1,...,parameter_n;aggregation_n};/{frequency}/data 
 ```
 
 ### Url parameters
@@ -57,7 +57,7 @@ GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{param
 | Parameter name | Description                                                                                                                  |    Default value    |    Example                                |
 |----------------|------------------------------------------------------------------------------------------------------------------------------|---------------------|-------------------------------------------|
 | connection     | Connection name.                                                                                                             |                     |    `SQLRACE01`                            |
-| sessionKey     | Session Key.                                                                                                                 |                     |    `016fa61e-33e2-7e85-1bc9-4ab56c668136` |
+| sessionId      | Session Id.                                                                                                                 |                     |    `016fa61e-33e2-7e85-1bc9-4ab56c668136` |
 | parameter      | Name(s) of the parameter(s). *Multiple parameters can be requested by separating them with a comma*                          |                     |    `vCar:Chassis, gLat:Chassis`           |
 | aggregation    | Optional aggregation function separated by a semicolon `;`. *Do not add semicolon if you are not specifying an aggregation.* |    `mean`           |    `;max`                                 |
 | frequency      | Frequency of the results in Hz.                                                                                              |                     |    10                                     |
@@ -171,7 +171,7 @@ Query Parameter Data
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1,parameter_2,...,parameter_n}/data
+GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters/{parameter_1,parameter_2,...,parameter_n}/data
 ```
 
 Example
@@ -243,7 +243,7 @@ It is demonstrated in this section several requests and combinations of the filt
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
+GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
 ```
 
 Example
@@ -326,7 +326,7 @@ Json Result:
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
+GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
 ```
 
 Example
@@ -397,7 +397,7 @@ Json Result
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
+GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
 ```
 
 Example
@@ -468,7 +468,7 @@ Json Result
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
+GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
 ```
 
 Example
@@ -552,7 +552,7 @@ This functionality is available for `/data` with and without frequency.
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter};{aggregation}/{frequency}/data/count
+GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters/{parameter};{aggregation}/{frequency}/data/count
 ```
 
 Example
@@ -580,7 +580,7 @@ If your backing storage is InfluxDb, you can aggregate parameter data over Influ
 
 Endpoint
 ```
-GET api/v1/connections/{connections}/sessions/{sessionKey}/parameters/{parameter};{aggregation}/data/aggregate?groupBy={tag1}&groupBy={tag2}
+GET api/v1/connections/{connections}/sessions/{sessionId}/parameters/{parameter};{aggregation}/data/aggregate?groupBy={tag1}&groupBy={tag2}
 ```
 
 Example

@@ -19,7 +19,7 @@ It is possible to collect session metadata from both InfluxDb and SqlRace data s
 Sessions
 ========
 
-The ```/sessions``` endpoint gives access to a list of sessions available for a given connection. Since there may be multiple versions of sessions with the same session key, only the latest version of a session is returned. You can use ```/sessions/{sessionKey}/versions``` to explore different versions of the session (described below).<br />
+The ```/sessions``` endpoint gives access to a list of sessions available for a given connection. Since there may be multiple versions of sessions with the same session id, only the latest version of a session is returned. You can use ```/sessions/{sessionId}/versions``` to explore different versions of the session (described below).<br />
 
 ### Query all available sessions
 
@@ -37,7 +37,8 @@ Result
 ```json
 [
   {
-    "key": "0151d834-7a23-46c6-a3fc-eb536adcf93b",
+    "id": "0151d834-7a23-46c6-a3fc-eb536adcf93b",
+    "streamId": "0121d634-7l22-35r6-a3fc-eb536adcf93b",
     "identifier": "Identifier7",
     "timeOfRecording": "2018-12-09T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -52,7 +53,8 @@ Result
     "sessionDetails": []
   },
   {
-    "key": "01bdac9f-18d9-4e8c-956b-c397206bf5a4",
+    "id": "01bdac9f-18d9-4e8c-956b-c397206bf5a4",
+    "streamId": "08fb78fa-6547-4a60-8a58-f3d6c1dd2978",
     "identifier": "Identifier5",
     "timeOfRecording": "2018-11-29T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -67,7 +69,8 @@ Result
     "sessionDetails": []
   },
   {
-    "key": "09d6802c-a9b8-4a77-bc40-3dbffd88ac7b",
+    "id": "09d6802c-a9b8-4a77-bc40-3dbffd88ac7b",
+    "streamId": "65fd2589-9359-49d6-bc1c-5a69128358e3",
     "identifier": "Identifier4",
     "timeOfRecording": "2018-11-23T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -82,7 +85,8 @@ Result
     "sessionDetails": []
   },
   {
-    "key": "0fa13add-4c1f-4dda-a7be-32bbfc1b8fc6",
+    "id": "0fa13add-4c1f-4dda-a7be-32bbfc1b8fc6",
+    "streamId": "1e8838ca-aa7e-490c-923e-a168d1285e6a",
     "identifier": "Identifier3",
     "timeOfRecording": "2018-12-05T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -97,7 +101,8 @@ Result
     "sessionDetails": []
   },
   {
-    "key": "150cc8cc-ef42-4730-826f-3705af91360c",
+    "id": "150cc8cc-ef42-4730-826f-3705af91360c",
+    "streamId": "0121d634-7l22-35r6-a3fc-eb536adcf93b",
     "identifier": "Identifier2",
     "timeOfRecording": "2018-12-04T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -171,7 +176,8 @@ Result
 ```json
 [
   {
-    "key": "16881d4c-7bcc-48f1-934f-a32645fc829f",
+    "id": "16881d4c-7bcc-48f1-934f-a32645fc829f",
+    "streamId": "0121d634-7l22-35r6-a3fc-eb536adcf93b",
     "identifier": "Identifier6",
     "timeOfRecording": "2018-12-09T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -186,7 +192,8 @@ Result
     "sessionDetails": []
   },
   {
-    "key": "23d61829-cd8d-4522-8951-f9c0f3867548",
+    "id": "23d61829-cd8d-4522-8951-f9c0f3867548",
+    "streamId": "08fb78fa-6547-4a60-8a58-f3d6c1dd2978",
     "identifier": "Identifier5",
     "timeOfRecording": "2018-12-10T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -201,7 +208,8 @@ Result
     "sessionDetails": []
   },
   {
-    "key": "7a3eb574-2038-4fa8-bebe-9b13eef64ab7",
+    "id": "7a3eb574-2038-4fa8-bebe-9b13eef64ab7",
+    "streamId": "65fd2589-9359-49d6-bc1c-5a69128358e3",
     "identifier": "Identifier4",
     "timeOfRecording": "2018-11-29T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -216,7 +224,8 @@ Result
     "sessionDetails": []
   },
   {
-    "key": "7a5e7a00-1860-449f-913b-e03688223622",
+    "id": "7a5e7a00-1860-449f-913b-e03688223622",
+    "streamId": "65fd2589-9359-49d6-bc1c-5a69128358e3",
     "identifier": "Identifier10",
     "timeOfRecording": "2018-12-02T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -231,7 +240,8 @@ Result
     "sessionDetails": []
   },
   {
-    "key": "8b420497-c312-45c5-93cd-4a2758d28e66",
+    "id": "8b420497-c312-45c5-93cd-4a2758d28e66",
+    "streamId": "0121d634-7l22-35r6-a3fc-eb536adcf93b",
     "identifier": "Identifier10",
     "timeOfRecording": "2018-12-10T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -264,7 +274,8 @@ Result
 ```json
 [
   {
-    "key": "0151d834-7a23-46c6-a3fc-eb536adcf93b",
+    "id": "0151d834-7a23-46c6-a3fc-eb536adcf93b",
+    "streamId": "0121d634-7l22-35r6-a3fc-eb536adcf93b",
     "identifier": "Identifier7",
     "timeOfRecording": "2018-12-09T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -279,7 +290,8 @@ Result
     "sessionDetails": []
   },
   {
-    "key": "16881d4c-7bcc-48f1-934f-a32645fc829f",
+    "id": "16881d4c-7bcc-48f1-934f-a32645fc829f",
+    "streamId": "65fd2589-9359-49d6-bc1c-5a69128358e3",
     "identifier": "Identifier6",
     "timeOfRecording": "2018-12-09T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -294,7 +306,8 @@ Result
     "sessionDetails": []
   },
   {
-    "key": "23d61829-cd8d-4522-8951-f9c0f3867548",
+    "id": "23d61829-cd8d-4522-8951-f9c0f3867548",
+    "streamId": "65fd2589-9359-49d6-bc1c-5a69128358e3",
     "identifier": "Identifier5",
     "timeOfRecording": "2018-12-10T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -309,7 +322,8 @@ Result
     "sessionDetails": []
   },
   {
-    "key": "52930321-f71b-4380-a886-45a8fe077e29",
+    "id": "52930321-f71b-4380-a886-45a8fe077e29",
+    "streamId": "08fb78fa-6547-4a60-8a58-f3d6c1dd2978",
     "identifier": "Identifier6",
     "timeOfRecording": "2018-12-05T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -324,7 +338,8 @@ Result
     "sessionDetails": []
   },
   {
-    "key": "8b420497-c312-45c5-93cd-4a2758d28e66",
+    "id": "8b420497-c312-45c5-93cd-4a2758d28e66",
+    "streamId": "1e8838ca-aa7e-490c-923e-a168d1285e6a",
     "identifier": "Identifier10",
     "timeOfRecording": "2018-12-10T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -371,7 +386,8 @@ Result
 ```json
 [
   {
-    "key": "f75f1c7d-9192-42c8-89f0-c1f1b613adcc",
+    "id": "f75f1c7d-9192-42c8-89f0-c1f1b613adcc",
+    "streamId": "1e8838ca-aa7e-490c-923e-a168d1285e6a",
     "identifier": "Identifier2",
     "timeOfRecording": "2018-12-02T00:00:00Z",
     "timeZone": null,
@@ -387,7 +403,8 @@ Result
     "sessionDetails": []
   },
   {
-    "key": "c64c8e95-7540-4951-8815-c908e51b2491",
+    "id": "c64c8e95-7540-4951-8815-c908e51b2491",
+    "streamId": "670c3d9c-7401-444b-829d-2e0226c71aca",
     "identifier": "Identifier2",
     "timeOfRecording": "2018-12-07T00:00:00Z",
     "timeZone": null,
@@ -403,7 +420,8 @@ Result
     "sessionDetails": []
   },
   {
-    "key": "fa3f18bb-153d-4c52-a1ff-8d04c46035b5",
+    "id": "b52b6bac-474b-4e8c-b2cd-bae44c35e71c",
+    "streamId": "1e8838ca-aa7e-490c-923e-a168d1285e6a",
     "identifier": "Identifier2",
     "timeOfRecording": "2018-12-05T00:00:00Z",
     "timeZone": null,
@@ -419,7 +437,8 @@ Result
     "sessionDetails": []
   },
   {
-    "key": "test-session-id",
+    "id": "test-session-id",
+    "streamId": "27539db2-23bb-42e8-b50b-a2b042a8f203",
     "identifier": "TestSession1",
     "timeOfRecording": "2018-12-03T00:00:00Z",
     "timeZone": null,
@@ -435,7 +454,8 @@ Result
     "sessionDetails": []
   },
   {
-    "key": "0179b921-1d0d-4b9e-96e1-9e9f1d86ccfd",
+    "id": "0179b921-1d0d-4b9e-96e1-9e9f1d86ccfd",
+    "streamId": "24dc48bd-e0d9-4b29-9db9-e1d6301aaf7c",
     "identifier": "Identifier10",
     "timeOfRecording": "2018-12-12T00:00:00Z",
     "timeZone": null,
@@ -460,18 +480,19 @@ The API allows to retrieve a session by its identifier. If there are multiple ve
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/id/{identifier}
+GET api/v1/connections/{connection name}/sessions/identifier/{identifier}
 ```
 
 Example  
 ```
-GET api/v1/connections/Connection/sessions/id/TestSession1
+GET api/v1/connections/Connection/sessions/identifier/TestSession1
 ```
 
 Result  
 ```json
 {
-  "key": "test-session-id",
+  "id": "test-session-id",
+  "streamId": "24dc48bd-e0d9-4b29-9db9-e1d6301aaf7c",
   "identifier": "TestSession1",
   "timeOfRecording": "2018-12-03T00:00:00Z",
   "sessionType": "StreamingSession",
@@ -490,7 +511,7 @@ Result
 Optional parameters  
 -------------------  
 
-The ```/sessions/id``` resource supports the following optional parameters.
+The ```/sessions/identifier``` resource supports the following optional parameters.
   
 | Parameter name | Description                                                 | Default value | Example                                                                   |  
 |----------------|-------------------------------------------------------------|---------------|---------------------------------------------------------------------------|
@@ -498,13 +519,13 @@ The ```/sessions/id``` resource supports the following optional parameters.
 
 <br />
 
-### <ins>Query all sessions by their sessions keys</ins>
+### <ins>Query all sessions by their sessions ids</ins>
 
-The API resource can be used to query multiple sessions using the session keys. ```sessionKeys``` route parameter is a comma-separated list of session keys. When more than one session exists for a session key, the latest version of the session is returned by default.
+The API resource can be used to query multiple sessions using the session ids. ```sessionIds``` route parameter is a comma-separated list of session ids. When more than one session exists for a session id, the latest version of the session is returned by default.
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKeys}
+GET api/v1/connections/{connection name}/sessions/{sessionIds}
 ```
 
 Example  
@@ -516,7 +537,8 @@ Result
 ```json
 [
   {
-    "key": "01388874-7a80-4d86-8020-8709c278fc9a",
+    "id": "01388874-7a80-4d86-8020-8709c278fc9a",
+    "streamId": "24dc48bd-e0d9-4b29-9db9-e1d6301aaf7c",
     "identifier": "Identifier3",
     "timeOfRecording": "2018-11-24T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -531,7 +553,8 @@ Result
     "sessionDetails": []
   },
   {
-    "key": "0151d834-7a23-46c6-a3fc-eb536adcf93b",
+    "id": "0151d834-7a23-46c6-a3fc-eb536adcf93b",
+    "streamId": "7aaeb737-217e-4e27-ac6d-55a22bd530f2",
     "identifier": "Identifier7",
     "timeOfRecording": "2018-12-09T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -551,7 +574,7 @@ Result
 Optional parameters  
 -------------------  
 
-The ```/sessions/{sessionKeys}``` resource supports the following optional parameters.
+The ```/sessions/{sessionIds}``` resource supports the following optional parameters.
   
 | Parameter name | Description                                                 | Default value | Example                                                                   |  
 |----------------|-------------------------------------------------------------|---------------|---------------------------------------------------------------------------|
@@ -585,7 +608,8 @@ Result
 ```json
 [
   {
-    "key": "06f2d6d8-5811-48f0-a7a0-50e84db12704",
+    "id": "06f2d6d8-5811-48f0-a7a0-50e84db12704",
+    "streamId": "7aaeb737-217e-4e27-ac6d-55a22bd530f2",
     "identifier": "Identifier10",
     "timeOfRecording": "2018-11-29T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -605,11 +629,11 @@ Result
 Parameters  
 ==========  
 
-The ```/sessions/{sessionKey}/parameters``` endpoint gives you access to a list of **parameters** available for a specific session. The list of **parameters** of a session are the fields related to the data that we can consume as described in [Consuming Data] (/docs/ConsumingData.md) section. If more than one session exists for the same session key, parameters of the latest version of the session are returned by default.
+The ```/sessions/{sessionId}/parameters``` endpoint gives you access to a list of **parameters** available for a specific session. The list of **parameters** of a session are the fields related to the data that we can consume as described in [Consuming Data] (/docs/ConsumingData.md) section. If more than one session exists for the same session id, parameters of the latest version of the session are returned by default.
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters
+GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters
 ```
 
 Example  
@@ -722,11 +746,11 @@ Result
 Details  
 =======
 
-The ```/sessions/{sessionKey}/details``` endpoint gives you access to a list of **details** available for a specific session. When more than one session is available for a session key, latest version of the session is returned. Use a filter on the ```version``` field to access details of a specific session version.
+The ```/sessions/{sessionId}/details``` endpoint gives you access to a list of **details** available for a specific session. When more than one session is available for a session id, latest version of the session is returned. Use a filter on the ```version``` field to access details of a specific session version.
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/details
+GET api/v1/connections/{connection name}/sessions/{sessionId}/details
 ```
   
 Example  
@@ -738,7 +762,8 @@ Result
 ```json
 [
   {
-    "key": "92ce7a51-83d1-43ec-bb0a-9cda685ca47c",
+    "id": "92ce7a51-83d1-43ec-bb0a-9cda685ca47c",
+    "streamId": "06f2d6d8-5811-48f0-a7a0-50e84db12704",
     "identifier": "Identifier6",
     "timeOfRecording": "2018-11-30T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -800,7 +825,7 @@ Result
 Laps  
 ====  
 
-The ```/sessions/{sessionKey}/laps``` endpoint gives you access to information related to the **laps** of a specific session.
+The ```/sessions/{sessionId}/laps``` endpoint gives you access to information related to the **laps** of a specific session.
 This endpoint provides a set of optional parameters.
 
 | Parameter name | Description                                                 | Example           |  
@@ -813,7 +838,7 @@ This endpoint provides a set of optional parameters.
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/laps
+GET api/v1/connections/{connection name}/sessions/{sessionId}/laps
 ```
   
 Example 
@@ -878,7 +903,7 @@ Result
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/laps
+GET api/v1/connections/{connection name}/sessions/{sessionId}/laps
 ```
   
 Example 
