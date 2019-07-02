@@ -1,4 +1,4 @@
-# ![logo](/MAT-speedmark-RGB-blk.svg) Telemetry Analytics API
+# ![logo](/docs/branding.png) Telemetry Analytics API
 
 ### Table of Contents
 - [**Introduction**](/README.md)<br>
