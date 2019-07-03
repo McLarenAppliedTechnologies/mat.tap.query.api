@@ -8,6 +8,7 @@
 - [**Authorization**](/docs/Authorization.md)<br>
 - [**Querying Metadata**](/docs/Metadata.md)<br>
 - [**Consuming Data**](/docs/ConsumingData.md)<br>
+- [**Session Versions**](/docs/SessionVersions.md)<br>
 - [**Views**](/docs/Views.md)<br>
 
 # Installation
