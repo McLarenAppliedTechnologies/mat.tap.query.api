@@ -1,4 +1,4 @@
-# ![logo](/docs/branding.bmp) Telemetry Analytics API
+# ![logo](/docs/branding.png) Telemetry Analytics API
 
 ### Table of Contents
 - [**Introduction**](/README.md)<br>
