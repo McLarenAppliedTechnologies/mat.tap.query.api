@@ -55,9 +55,79 @@ The json representation of a session model:
   }
 ```
 
-In the above json, `group`, `version` and `configuration` carry information about a session version. `group` indicates any group this session model belongs to. `version` indicates the session version which you are free to use the way best fit your needs (e.g. version the session together with the data science model, etc.). You can use `configuration` property store detailed information about the session version (e.g. a stringified representation of the data science model such as a json).
+In the above json, `group`, `version` and `configuration` carry information about a session version. `group` indicates any group this session model belongs to. `version` indicates the session version which you are free to use the way best fit your needs (e.g. version the session together with the data science model, not increment the version at all, etc.). You can use `configuration` property store detailed information about the session version (e.g. a stringified representation of the data science model such as a json).
 
 #### Querying session versions
+
+Detailed information on querying sessions are described in [Querying Metadata](/docs/Metadata.md). Here we will focus on querying session versions. In TAPI, as far as the client interface concerned, sessions are identifed using the session `id` (not the stream id) to make sure that you can identify a session uniformly across the Atlas ecosystem (Atlas desktop client, ADS, etc) which uses session `id` as the primary session identifier. If there are multiple session versions with the same session `id`, You must specify the session version of a session in TAPI, you can use the optional `sessionVersion` query parameter.
+
+If you do not specify the session version, TAPI returns the latest version of the session in storage. The latest version is determined, in order of precedence, using the `version`, quality (an internal value related to Atlas sessions) and time of recording. If you did not version the sessions or the session quality is not applicable to your usecase, TAPI will return the last recorded session based on the `timeOfRecording` for that session id.
+
+You can use ```/sessions/{sessionId}/versions``` resource to explore different versions of the session.<br />
+
+Endpoint
+```
+GET api/v1/connections/{connection name}/sessions/{session id}/versions
+```
+
+Example  
+```
+GET api/v1/connections/Connection/sessions/0151d834-7a23-46c6-a3fc-eb536adcf93b/versions
+```
+
+Result  
+```json
+[
+  {
+    "id": "0151d834-7a23-46c6-a3fc-eb536adcf93b",
+    "streamId": "0121d634-7l22-35r6-a3fc-eb536adcf93b",
+    "identifier": "Identifier7",
+    "timeOfRecording": "2018-12-09T00:00:00Z",
+    "sessionType": "StreamingSession",
+    "start": "2019-03-28T14:33:08.3917995Z",
+    "end": "2019-03-28T14:33:08.3917995Z",
+    "lapsCount": 10,
+    "state": "Closed",
+    "topicName": "TopicName",
+    "group": "Group10",
+    "version": 1,
+    "configuration": "{ \"key\": \"value1\" }",
+    "sessionDetails": []
+  },
+  {
+    "id": "0151d834-7a23-46c6-a3fc-eb536adcf93b",
+    "streamId": "08fb78fa-6547-4a60-8a58-f3d6c1dd2978",
+    "identifier": "Identifier5",
+    "timeOfRecording": "2018-11-29T00:00:00Z",
+    "sessionType": "StreamingSession",
+    "start": "2018-03-28T14:33:08.3917995Z",
+    "end": "2018-03-28T14:33:08.3917995Z",
+    "lapsCount": 10,
+    "state": "Closed",
+    "topicName": "TopicName",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value2\" }",
+    "sessionDetails": []
+  },
+  {
+    "id": "0151d834-7a23-46c6-a3fc-eb536adcf93b",
+    "streamId": "65fd2589-9359-49d6-bc1c-5a69128358e3",
+    "identifier": "Identifier4",
+    "timeOfRecording": "2018-11-23T00:00:00Z",
+    "sessionType": "StreamingSession",
+   "start": "2018-03-28T14:33:08.3917995Z",
+    "end": "2018-03-28T14:33:08.3917995Z",
+    "lapsCount": 10,
+    "state": "Closed",
+    "topicName": "TopicName",
+    "group": "Group10",
+    "version": 3,
+    "configuration": "{ \"key\": \"value3\" }",
+    "sessionDetails": []
+  }
+]
+```
 
 
 

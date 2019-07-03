@@ -20,7 +20,7 @@ It is possible to collect session metadata from both InfluxDb and SqlRace data s
 Sessions
 ========
 
-The ```/sessions``` endpoint gives access to a list of sessions available for a given connection. Since there may be multiple versions of sessions with the same session id, only the latest version of a session is returned. You can use ```/sessions/{sessionId}/versions``` to explore different versions of the session (described below).<br />
+The ```/sessions``` endpoint gives access to a list of sessions available for a given connection. Since there may be multiple versions of sessions with the same session id, only the latest version of a session is returned. More information on exploring session versions are described in [Session Versions](/docs/SessionVersions.md).
 
 ### Query all available sessions
 
