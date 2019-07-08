@@ -7,6 +7,7 @@
 - [**Identity Server**](/docs/IdentityServer.md)<br>
 - [**Authorization**](/docs/Authorization.md)<br>
 - [**Querying Metadata**](/docs/Metadata.md)<br>
+- [**Session Versions**](/docs/SessionVersions.md)<br>
 - [**Consuming Data**](/docs/ConsumingData.md)<br>
 - [**Views**](/docs/Views.md)<br>
 
