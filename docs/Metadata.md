@@ -8,6 +8,7 @@
 - [**Authorization**](/docs/Authorization.md)<br>
 - [**Querying Metadata**](/docs/Metadata.md)<br>
 - [**Consuming Data**](/docs/ConsumingData.md)<br>
+- [**Session Versions**](/docs/SessionVersions.md)<br>
 - [**Views**](/docs/Views.md)<br>
 
 
@@ -19,7 +20,7 @@ It is possible to collect session metadata from both InfluxDb and SqlRace data s
 Sessions
 ========
 
-The ```/sessions``` endpoint gives access to a list of **historical** sessions available for a given connection.<br />
+The ```/sessions``` endpoint gives access to a list of sessions available for a given connection. Since there may be multiple versions of sessions with the same session id, only the latest version of a session is returned. More information on exploring session versions are described in [Session Versions](/docs/SessionVersions.md).
 
 ### Query all available sessions
 
@@ -37,7 +38,8 @@ Result
 ```json
 [
   {
-    "key": "0151d834-7a23-46c6-a3fc-eb536adcf93b",
+    "id": "0151d834-7a23-46c6-a3fc-eb536adcf93b",
+    "streamId": "0121d634-7l22-35r6-a3fc-eb536adcf93b",
     "identifier": "Identifier7",
     "timeOfRecording": "2018-12-09T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -46,10 +48,14 @@ Result
     "lapsCount": 10,
     "state": "Open",
     "topicName": "TopicName7",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   },
   {
-    "key": "01bdac9f-18d9-4e8c-956b-c397206bf5a4",
+    "id": "01bdac9f-18d9-4e8c-956b-c397206bf5a4",
+    "streamId": "08fb78fa-6547-4a60-8a58-f3d6c1dd2978",
     "identifier": "Identifier5",
     "timeOfRecording": "2018-11-29T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -58,22 +64,30 @@ Result
     "lapsCount": 10,
     "state": "Closed",
     "topicName": "TopicName5",
+    "group": "Group10",
+    "version": 1,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   },
   {
-    "key": "09d6802c-a9b8-4a77-bc40-3dbffd88ac7b",
+    "id": "09d6802c-a9b8-4a77-bc40-3dbffd88ac7b",
+    "streamId": "65fd2589-9359-49d6-bc1c-5a69128358e3",
     "identifier": "Identifier4",
     "timeOfRecording": "2018-11-23T00:00:00Z",
     "sessionType": "StreamingSession",
     "start": "2019-03-28T14:36:42.1170779Z",
     "end": "2019-03-28T14:36:42.1170779Z",
     "lapsCount": 10,
-    "state": "Closed",
+    "state": "Open",
     "topicName": "TopicName4",
+    "group": "Group10",
+    "version": 3,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   },
   {
-    "key": "0fa13add-4c1f-4dda-a7be-32bbfc1b8fc6",
+    "id": "0fa13add-4c1f-4dda-a7be-32bbfc1b8fc6",
+    "streamId": "1e8838ca-aa7e-490c-923e-a168d1285e6a",
     "identifier": "Identifier3",
     "timeOfRecording": "2018-12-05T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -82,18 +96,25 @@ Result
     "lapsCount": 10,
     "state": "Closed",
     "topicName": "TopicName3",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   },
   {
-    "key": "150cc8cc-ef42-4730-826f-3705af91360c",
+    "id": "150cc8cc-ef42-4730-826f-3705af91360c",
+    "streamId": "0121d634-7l22-35r6-a3fc-eb536adcf93b",
     "identifier": "Identifier2",
     "timeOfRecording": "2018-12-04T00:00:00Z",
     "sessionType": "StreamingSession",
     "start": "2019-03-28T14:42:14.1820662Z",
     "end": "2019-03-28T14:56:26.1820662Z",
     "lapsCount": 10,
-    "state": "Open",
+    "state": "Closed",
     "topicName": "TopicName2",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   }
 ]
@@ -156,7 +177,8 @@ Result
 ```json
 [
   {
-    "key": "16881d4c-7bcc-48f1-934f-a32645fc829f",
+    "id": "16881d4c-7bcc-48f1-934f-a32645fc829f",
+    "streamId": "0121d634-7l22-35r6-a3fc-eb536adcf93b",
     "identifier": "Identifier6",
     "timeOfRecording": "2018-12-09T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -165,10 +187,14 @@ Result
     "lapsCount": 10,
     "state": "Closed",
     "topicName": "TopicName6",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   },
   {
-    "key": "23d61829-cd8d-4522-8951-f9c0f3867548",
+    "id": "23d61829-cd8d-4522-8951-f9c0f3867548",
+    "streamId": "08fb78fa-6547-4a60-8a58-f3d6c1dd2978",
     "identifier": "Identifier5",
     "timeOfRecording": "2018-12-10T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -177,10 +203,14 @@ Result
     "lapsCount": 10,
     "state": "Closed",
     "topicName": "TopicName5",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   },
   {
-    "key": "7a3eb574-2038-4fa8-bebe-9b13eef64ab7",
+    "id": "7a3eb574-2038-4fa8-bebe-9b13eef64ab7",
+    "streamId": "65fd2589-9359-49d6-bc1c-5a69128358e3",
     "identifier": "Identifier4",
     "timeOfRecording": "2018-11-29T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -189,10 +219,14 @@ Result
     "lapsCount": 10,
     "state": "Closed",
     "topicName": "TopicName4",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   },
   {
-    "key": "7a5e7a00-1860-449f-913b-e03688223622",
+    "id": "7a5e7a00-1860-449f-913b-e03688223622",
+    "streamId": "65fd2589-9359-49d6-bc1c-5a69128358e3",
     "identifier": "Identifier10",
     "timeOfRecording": "2018-12-02T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -201,10 +235,14 @@ Result
     "lapsCount": 10,
     "state": "Closed",
     "topicName": "TopicName10",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   },
   {
-    "key": "8b420497-c312-45c5-93cd-4a2758d28e66",
+    "id": "8b420497-c312-45c5-93cd-4a2758d28e66",
+    "streamId": "0121d634-7l22-35r6-a3fc-eb536adcf93b",
     "identifier": "Identifier10",
     "timeOfRecording": "2018-12-10T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -213,6 +251,9 @@ Result
     "lapsCount": 10,
     "state": "Closed",
     "topicName": "TopicName10",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   }
 ]
@@ -234,7 +275,8 @@ Result
 ```json
 [
   {
-    "key": "0151d834-7a23-46c6-a3fc-eb536adcf93b",
+    "id": "0151d834-7a23-46c6-a3fc-eb536adcf93b",
+    "streamId": "0121d634-7l22-35r6-a3fc-eb536adcf93b",
     "identifier": "Identifier7",
     "timeOfRecording": "2018-12-09T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -243,10 +285,14 @@ Result
     "lapsCount": 10,
     "state": "Open",
     "topicName": "TopicName7",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   },
   {
-    "key": "16881d4c-7bcc-48f1-934f-a32645fc829f",
+    "id": "16881d4c-7bcc-48f1-934f-a32645fc829f",
+    "streamId": "65fd2589-9359-49d6-bc1c-5a69128358e3",
     "identifier": "Identifier6",
     "timeOfRecording": "2018-12-09T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -255,10 +301,14 @@ Result
     "lapsCount": 10,
     "state": "Closed",
     "topicName": "TopicName6",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   },
   {
-    "key": "23d61829-cd8d-4522-8951-f9c0f3867548",
+    "id": "23d61829-cd8d-4522-8951-f9c0f3867548",
+    "streamId": "65fd2589-9359-49d6-bc1c-5a69128358e3",
     "identifier": "Identifier5",
     "timeOfRecording": "2018-12-10T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -267,10 +317,14 @@ Result
     "lapsCount": 10,
     "state": "Closed",
     "topicName": "TopicName5",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   },
   {
-    "key": "52930321-f71b-4380-a886-45a8fe077e29",
+    "id": "52930321-f71b-4380-a886-45a8fe077e29",
+    "streamId": "08fb78fa-6547-4a60-8a58-f3d6c1dd2978",
     "identifier": "Identifier6",
     "timeOfRecording": "2018-12-05T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -279,10 +333,14 @@ Result
     "lapsCount": 10,
     "state": "Closed",
     "topicName": "TopicName6",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   },
   {
-    "key": "8b420497-c312-45c5-93cd-4a2758d28e66",
+    "id": "8b420497-c312-45c5-93cd-4a2758d28e66",
+    "streamId": "1e8838ca-aa7e-490c-923e-a168d1285e6a",
     "identifier": "Identifier10",
     "timeOfRecording": "2018-12-10T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -291,6 +349,9 @@ Result
     "lapsCount": 10,
     "state": "Closed",
     "topicName": "TopicName10",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   }
 ]
@@ -326,7 +387,8 @@ Result
 ```json
 [
   {
-    "key": "f75f1c7d-9192-42c8-89f0-c1f1b613adcc",
+    "id": "f75f1c7d-9192-42c8-89f0-c1f1b613adcc",
+    "streamId": "1e8838ca-aa7e-490c-923e-a168d1285e6a",
     "identifier": "Identifier2",
     "timeOfRecording": "2018-12-02T00:00:00Z",
     "timeZone": null,
@@ -336,10 +398,14 @@ Result
     "lapsCount": 10,
     "state": "Open",
     "topicName": "TopicName2",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   },
   {
-    "key": "c64c8e95-7540-4951-8815-c908e51b2491",
+    "id": "c64c8e95-7540-4951-8815-c908e51b2491",
+    "streamId": "670c3d9c-7401-444b-829d-2e0226c71aca",
     "identifier": "Identifier2",
     "timeOfRecording": "2018-12-07T00:00:00Z",
     "timeZone": null,
@@ -349,10 +415,14 @@ Result
     "lapsCount": 10,
     "state": "Open",
     "topicName": "TopicName2",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   },
   {
-    "key": "fa3f18bb-153d-4c52-a1ff-8d04c46035b5",
+    "id": "b52b6bac-474b-4e8c-b2cd-bae44c35e71c",
+    "streamId": "1e8838ca-aa7e-490c-923e-a168d1285e6a",
     "identifier": "Identifier2",
     "timeOfRecording": "2018-12-05T00:00:00Z",
     "timeZone": null,
@@ -362,10 +432,14 @@ Result
     "lapsCount": 10,
     "state": "Open",
     "topicName": "TopicName2",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   },
   {
-    "key": "test-session-id",
+    "id": "test-session-id",
+    "streamId": "27539db2-23bb-42e8-b50b-a2b042a8f203",
     "identifier": "TestSession1",
     "timeOfRecording": "2018-12-03T00:00:00Z",
     "timeZone": null,
@@ -375,10 +449,14 @@ Result
     "lapsCount": 10,
     "state": "Open",
     "topicName": "TopicName1",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   },
   {
-    "key": "0179b921-1d0d-4b9e-96e1-9e9f1d86ccfd",
+    "id": "0179b921-1d0d-4b9e-96e1-9e9f1d86ccfd",
+    "streamId": "24dc48bd-e0d9-4b29-9db9-e1d6301aaf7c",
     "identifier": "Identifier10",
     "timeOfRecording": "2018-12-12T00:00:00Z",
     "timeZone": null,
@@ -388,6 +466,9 @@ Result
     "lapsCount": 10,
     "state": "Closed",
     "topicName": "TopicName10",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   }
 ]
@@ -396,22 +477,23 @@ Result
 
 ### <ins>Query a specific session by its identifier</ins>
 
-The API allows to retrieve a session by its identifier.
+The API allows to retrieve a session by its identifier. If there are multiple versions of sessions for the same session identifier, latest version of the session is returned by default. Use the optional query parameter ```sessionVersion``` to query a specific version.
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/id/{identifier}
+GET api/v1/connections/{connection name}/sessions/identifier/{identifier}
 ```
 
 Example  
 ```
-GET api/v1/connections/Connection/sessions/id/TestSession1
+GET api/v1/connections/Connection/sessions/identifier/TestSession1
 ```
 
 Result  
 ```json
 {
-  "key": "test-session-id",
+  "id": "test-session-id",
+  "streamId": "24dc48bd-e0d9-4b29-9db9-e1d6301aaf7c",
   "identifier": "TestSession1",
   "timeOfRecording": "2018-12-03T00:00:00Z",
   "sessionType": "StreamingSession",
@@ -420,18 +502,31 @@ Result
   "lapsCount": 0,
   "state": "Open",
   "topicName": "TopicName1",
+  "group": "Group10",
+  "version": 2,
+  "configuration": "{ \"key\": \"value\" }",
   "sessionDetails": []
 }
 ```
+
+Optional parameters  
+-------------------  
+
+The ```/sessions/identifier``` resource supports the following optional parameters.
+  
+| Parameter name | Description                                                 | Default value | Example                                                                   |  
+|----------------|-------------------------------------------------------------|---------------|---------------------------------------------------------------------------|
+| sessionVersion | Session version.                                            | Highest available version | 3                                                             | 
+
 <br />
 
-### <ins>Query all sessions by their sessions keys</ins>
+### <ins>Query all sessions by their sessions ids</ins>
 
-The API allows to retrieve a session by its identifier.
+The API resource can be used to query multiple sessions using the session ids. ```sessionIds``` route parameter is a comma-separated list of session ids. When more than one session exists for a session id, the latest version of the session is returned by default.
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/id/{identifier}
+GET api/v1/connections/{connection name}/sessions/{sessionIds}
 ```
 
 Example  
@@ -443,7 +538,8 @@ Result
 ```json
 [
   {
-    "key": "01388874-7a80-4d86-8020-8709c278fc9a",
+    "id": "01388874-7a80-4d86-8020-8709c278fc9a",
+    "streamId": "24dc48bd-e0d9-4b29-9db9-e1d6301aaf7c",
     "identifier": "Identifier3",
     "timeOfRecording": "2018-11-24T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -452,10 +548,14 @@ Result
     "lapsCount": 0,
     "state": "Closed",
     "topicName": "TopicName3",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   },
   {
-    "key": "0151d834-7a23-46c6-a3fc-eb536adcf93b",
+    "id": "0151d834-7a23-46c6-a3fc-eb536adcf93b",
+    "streamId": "7aaeb737-217e-4e27-ac6d-55a22bd530f2",
     "identifier": "Identifier7",
     "timeOfRecording": "2018-12-09T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -464,10 +564,22 @@ Result
     "lapsCount": 0,
     "state": "Open",
     "topicName": "TopicName7",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   }
 ]
 ```
+
+Optional parameters  
+-------------------  
+
+The ```/sessions/{sessionIds}``` resource supports the following optional parameters.
+  
+| Parameter name | Description                                                 | Default value | Example                                                                   |  
+|----------------|-------------------------------------------------------------|---------------|---------------------------------------------------------------------------|
+| sessionVersion | Session version.                                            | Highest available version | 3                                                             |
 
 Live sessions  
 ===================  
@@ -497,7 +609,8 @@ Result
 ```json
 [
   {
-    "key": "06f2d6d8-5811-48f0-a7a0-50e84db12704",
+    "id": "06f2d6d8-5811-48f0-a7a0-50e84db12704",
+    "streamId": "7aaeb737-217e-4e27-ac6d-55a22bd530f2",
     "identifier": "Identifier10",
     "timeOfRecording": "2018-11-29T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -506,6 +619,9 @@ Result
     "lapsCount": 0,
     "state": "Open",
     "topicName": "TopicName10",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails": []
   }
 ]
@@ -514,11 +630,11 @@ Result
 Parameters  
 ==========  
 
-The ```/sessions/{sessionKey}/parameters``` endpoint gives you access to a list of **parameters** available for a specific session. The list of **parameters** of a session are the fields related to the data that we can consume as described in [Consuming Data] (/docs/ConsumingData.md) section.
+The ```/sessions/{sessionId}/parameters``` endpoint gives you access to a list of **parameters** available for a specific session. The list of **parameters** of a session are the fields related to the data that we can consume as described in [Consuming Data] (/docs/ConsumingData.md) section. If more than one session exists for the same session id, parameters of the latest version of the session are returned by default.
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters
+GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters
 ```
 
 Example  
@@ -537,6 +653,7 @@ Optional parameters
 | startsWith     | Text filter applied to the <ins>identifier</ins> parameter  | vCar              |
 | filter         | It allows filtering on the results.                         | Frequency;ge;10   |
 | order          | It allows ordering of the results.                          | MaximumValue:desc |
+| sessionVersion | Session version.                                            | 3                 |
 
 ### Paging  
 
@@ -547,7 +664,7 @@ GET api/v1/connections/M800960/sessions/92ce7a51-83d1-43ec-bb0a-9cda685ca47c/par
   
 ### Filtering
 
-It is possible to provide filtering for 
+It is possible to provide filtering for parameters.
   
 Example 
 ```
@@ -567,7 +684,8 @@ Result
     "format": "%5.2f",
     "parentParameterGroup": "APP1",
     "frequency": 0,
-    "aggregates": "Avg"
+    "aggregates": "Avg",
+    "streamId": "06f2d6d8-5811-48f0-a7a0-50e84db12704"
   },
   {
     "identifier": "vCar:APP2",
@@ -579,7 +697,8 @@ Result
     "format": "%5.1f",
     "parentParameterGroup": "APP2",
     "frequency": 0,
-    "aggregates": "Avg"
+    "aggregates": "Avg",
+    "streamId": "06f2d6d8-5811-48f0-a7a0-50e84db12704"
   },
   {
     "identifier": "vCar_2Buffer:APP8",
@@ -591,7 +710,8 @@ Result
     "format": "%5.2f",
     "parentParameterGroup": "APP8",
     "frequency": 0,
-    "aggregates": "Avg"
+    "aggregates": "Avg",
+    "streamId": "06f2d6d8-5811-48f0-a7a0-50e84db12704"
   },
   {
     "identifier": "vCarDemo:APP1",
@@ -603,7 +723,8 @@ Result
     "format": "%5.2f",
     "parentParameterGroup": "APP1",
     "frequency": 0,
-    "aggregates": "Avg"
+    "aggregates": "Avg",
+    "streamId": "06f2d6d8-5811-48f0-a7a0-50e84db12704"
   },
   {
     "identifier": "vCarEndofMarpleSector1:APP3",
@@ -615,19 +736,22 @@ Result
     "format": "%5.2f",
     "parentParameterGroup": "APP3",
     "frequency": 0,
-    "aggregates": "Avg"
+    "aggregates": "Avg",
+    "streamId": "06f2d6d8-5811-48f0-a7a0-50e84db12704"
   }
 ]
 ```
 
+```streamId``` is a unique identifier that identifies a specific session version.
+
 Details  
 =======
 
-The ```/sessions/{sessionKey}/details``` endpoint gives you access to a list of **details** available for a specific session.
+The ```/sessions/{sessionId}/details``` endpoint gives you access to a list of **details** available for a specific session. When more than one session is available for a session id, latest version of the session is returned. Use a filter on the ```version``` field to access details of a specific session version.
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/details
+GET api/v1/connections/{connection name}/sessions/{sessionId}/details
 ```
   
 Example  
@@ -639,7 +763,8 @@ Result
 ```json
 [
   {
-    "key": "92ce7a51-83d1-43ec-bb0a-9cda685ca47c",
+    "id": "92ce7a51-83d1-43ec-bb0a-9cda685ca47c",
+    "streamId": "06f2d6d8-5811-48f0-a7a0-50e84db12704",
     "identifier": "Identifier6",
     "timeOfRecording": "2018-11-30T00:00:00Z",
     "sessionType": "StreamingSession",
@@ -648,6 +773,9 @@ Result
     "lapsCount": 0,
     "state": "Closed",
     "topicName": "TopicName6",
+    "group": "Group10",
+    "version": 2,
+    "configuration": "{ \"key\": \"value\" }",
     "sessionDetails":
     [
       {
@@ -698,19 +826,20 @@ Result
 Laps  
 ====  
 
-The ```/sessions/{sessionKey}/laps``` endpoint gives you access to information related to the **laps** of a specific session.
+The ```/sessions/{sessionId}/laps``` endpoint gives you access to information related to the **laps** of a specific session.
 This endpoint provides a set of optional parameters.
 
 | Parameter name | Description                                                 | Example           |  
 |----------------|-------------------------------------------------------------|-------------------|  
 | filter         | It allows filtering on the results.                         | number;ge;10      |
 | order          | It allows ordering of the results.                          | number:desc       |
+| sessionVersion | Session version.                                            | 3                 |
 
 ### <ins>Query all laps from a given session</ins>
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/laps
+GET api/v1/connections/{connection name}/sessions/{sessionId}/laps
 ```
   
 Example 
@@ -728,7 +857,7 @@ Result
     "countForFastestLap": true,
     "name": "Name2",
     "number": 2,
-    "sessionId": "test-session-id"
+    "streamId": "06f2d6d8-5811-48f0-a7a0-50e84db12704"
   },
   {
     "start": "1970-01-01T00:00:00Z",
@@ -737,7 +866,7 @@ Result
     "countForFastestLap": false,
     "name": "Name3",
     "number": 3,
-    "sessionId": "test-session-id"
+    "streamId": "06f2d6d8-5811-48f0-a7a0-50e84db12704"
   },
   {
     "start": "1970-01-01T00:00:00Z",
@@ -746,7 +875,7 @@ Result
     "countForFastestLap": true,
     "name": "Name4",
     "number": 4,
-    "sessionId": "test-session-id"
+    "streamId": "06f2d6d8-5811-48f0-a7a0-50e84db12704"
   },
   {
     "start": "1970-01-01T00:00:00Z",
@@ -755,7 +884,7 @@ Result
     "countForFastestLap": false,
     "name": "Name5",
     "number": 5,
-    "sessionId": "test-session-id"
+    "streamId": "06f2d6d8-5811-48f0-a7a0-50e84db12704"
   },
   {
     "start": "1970-01-01T00:00:00Z",
@@ -764,16 +893,18 @@ Result
     "countForFastestLap": true,
     "name": "Name6",
     "number": 6,
-    "sessionId": "test-session-id"
+    "streamId": "06f2d6d8-5811-48f0-a7a0-50e84db12704"
   }
 ]
 ```
+
+```streamId``` is a unique identifier that identifies a specific session version.
 
 ### <ins>Query a lap for a given session</ins>
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/laps
+GET api/v1/connections/{connection name}/sessions/{sessionId}/laps
 ```
   
 Example 
@@ -790,6 +921,6 @@ Result
   "countForFastestLap": false,
   "name": "Lap",
   "number": 5,
-  "sessionId": "session-id"
+  "streamId": "06f2d6d8-5811-48f0-a7a0-50e84db12704"
 }
 ```

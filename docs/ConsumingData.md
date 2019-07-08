@@ -8,6 +8,7 @@
 - [**Authorization**](/docs/Authorization.md)<br>
 - [**Querying Metadata**](/docs/Metadata.md)<br>
 - [**Consuming Data**](/docs/ConsumingData.md)<br>
+- [**Session Versions**](/docs/SessionVersions.md)<br>
 - [**Views**](/docs/Views.md)<br>
 
 
@@ -22,18 +23,18 @@ It is possible to consume data using the api from either InfluxDB or SqlRace, be
 - When using <ins>SqlRace</ins> as the backing data storage, First, Mean, Min, Max aggregations are supported.
 - The resource `/data/aggregate` is only supported by InfluxDB backing data storage.
 - All resources under `/data` for both data storages provide different response formats. All endpoints support both json and csv, by specifying header Accept-Type as "application/json" or "text/csv", the later one being more optimized for downloading large amounts of parameter data. This flexible approach allows for a data format to be chosen given the technical requirements of the client application (e.g. web applications). Both data storages allow you to query one or multiple parameters for a given session.
+- When using <ins>InfluxDb</ins> as the backing data storage, it is possible to access session versions using optional query parameters. If a version is not specified, latest version for a specific session is used to query by default.
 
 ## Consuming Parameter Data
 
 It is possible to consume parameter data using `/data` endpoint. For resources under `/data` path, two url masks are available for querying data.
-
 
 ### Base url masks
 
 Querying at raw rate:
 
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1,parameter_2,...,parameter_n}/data
+GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters/{parameter_1,parameter_2,...,parameter_n}/data
 ```
 
 ### Url parameters
@@ -41,7 +42,7 @@ GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{param
 | Parameter name | Description                                                                                         |    Example                                |
 |----------------|-----------------------------------------------------------------------------------------------------|-------------------------------------------|
 | connection     | Connection name.                                                                                    |    `SQLRACE01`                            |
-| sessionKey     | Session Key.                                                                                        |    `016fa61e-33e2-7e85-1bc9-4ab56c668136` |
+| sessionId      | Session Id.                                                                                        |    `016fa61e-33e2-7e85-1bc9-4ab56c668136` |
 | parameter      | Name(s) of the parameter(s). *Multiple parameters can be requested by separating them with a comma* |    `vCar:Chassis, gLat:Chassis`           |
 
 <br />
@@ -49,7 +50,7 @@ GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{param
 Query with frequency:
 
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1;aggregation_1,...,parameter_n;aggregation_n};/{frequency}/data 
+GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters/{parameter_1;aggregation_1,...,parameter_n;aggregation_n};/{frequency}/data 
 ```
 
 ### Url parameters
@@ -57,7 +58,7 @@ GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{param
 | Parameter name | Description                                                                                                                  |    Default value    |    Example                                |
 |----------------|------------------------------------------------------------------------------------------------------------------------------|---------------------|-------------------------------------------|
 | connection     | Connection name.                                                                                                             |                     |    `SQLRACE01`                            |
-| sessionKey     | Session Key.                                                                                                                 |                     |    `016fa61e-33e2-7e85-1bc9-4ab56c668136` |
+| sessionId      | Session Id.                                                                                                                 |                     |    `016fa61e-33e2-7e85-1bc9-4ab56c668136` |
 | parameter      | Name(s) of the parameter(s). *Multiple parameters can be requested by separating them with a comma*                          |                     |    `vCar:Chassis, gLat:Chassis`           |
 | aggregation    | Optional aggregation function separated by a semicolon `;`. *Do not add semicolon if you are not specifying an aggregation.* |    `mean`           |    `;max`                                 |
 | frequency      | Frequency of the results in Hz.                                                                                              |                     |    10                                     |
@@ -78,6 +79,7 @@ Optionally it is possible to filter the data by the following parameters:
 | pageSize       | Size of one page.                                                                                                                   |    `null`           |    50                                    |
 | timeUnit       | Units of time. Use `Ns` for nanoseconds and `Ms` for microseconds.                                                                  |      `Ns`           |    `Ms`                                  |
 | groupBy        | Groups queries by fields (Only supported for InfluxDb storage). Use `*` to group by all available fields.                           |    `null`           |    `groupBy=lapnumber&groupBy=sessionId` |
+| sessionVersion | Version of a session to use. If not specified, latest version is used.                                                              |    `null`           |    2    |
 
 #### Optional parameters validation
 As mentioned when requesting either raw data or frequency one, it is possible to provide a set of optional parameters. The API will validate the optional parameters provided and in case of failure in binding any of the parameters it will provide a response with a 422 status code (Unprocessable Entity) and a message or a set of messages with the failure errors. <br />
@@ -170,7 +172,7 @@ Query Parameter Data
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1,parameter_2,...,parameter_n}/data
+GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters/{parameter_1,parameter_2,...,parameter_n}/data
 ```
 
 Example
@@ -242,7 +244,7 @@ It is demonstrated in this section several requests and combinations of the filt
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
+GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
 ```
 
 Example
@@ -325,7 +327,7 @@ Json Result:
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
+GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
 ```
 
 Example
@@ -396,7 +398,7 @@ Json Result
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
+GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
 ```
 
 Example
@@ -467,7 +469,7 @@ Json Result
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
+GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters/{parameter_1;aggregation_1,parameter_2;aggregation_2,...,parameter_n;aggregation_n}/{frequency}/data
 ```
 
 Example
@@ -551,7 +553,7 @@ This functionality is available for `/data` with and without frequency.
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/{sessionKey}/parameters/{parameter};{aggregation}/{frequency}/data/count
+GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters/{parameter};{aggregation}/{frequency}/data/count
 ```
 
 Example
@@ -579,7 +581,7 @@ If your backing storage is InfluxDb, you can aggregate parameter data over Influ
 
 Endpoint
 ```
-GET api/v1/connections/{connections}/sessions/{sessionKey}/parameters/{parameter};{aggregation}/data/aggregate?groupBy={tag1}&groupBy={tag2}
+GET api/v1/connections/{connections}/sessions/{sessionId}/parameters/{parameter};{aggregation}/data/aggregate?groupBy={tag1}&groupBy={tag2}
 ```
 
 Example
