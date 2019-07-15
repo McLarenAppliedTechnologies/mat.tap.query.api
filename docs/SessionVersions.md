@@ -1,4 +1,4 @@
-# ![logo](/docs/branding.bmp) Telemetry Analytics API
+# ![logo](/docs/branding.png) Telemetry Analytics API
 
 ### Table of Contents
 - [**Introduction**](/README.md)<br>
@@ -14,25 +14,25 @@
 
 ## Session Versions
 
-In TAP a session can be identified using various identifiers some of which are guarenteed to be unique everytime you stream a session using TAP while others aren't. Following are the identifiers you can use to identify a session.
+In TAP, a session can be identified using various identifiers some of which are guarenteed to be unique everytime you stream a session using TAP while others aren't. Following are the identifiers you can use to identify a session.
 
 1. Stream Id <br>
-Stream Id is a GUID that is generated each time you stream a session from TAP. This is a guarenteed to be unique each time you stream the session. For example, if you are replaying the same historic session from a file multiple times, you will get a new `streamId` each time.
+Stream Id is a GUID that is generated each time you stream a session from TAP. This is guarenteed to be unique. For example, if you are replaying the same historic session from a file multiple times, you will get a new `streamId` for each replay.
 2. Id <br>
-Session Id which is also a GUID is unique per session up to a replay. In other words, if you replay the same historic session, session id does not change between replays.
+Session Id, which is also a GUID, is unique per session up to a replay. In other words, if you replay the same historic session, session id does not change between replays.
 3. Identifier <br>
 Identifer is simply a human-friendly name of the session. This is unique up to a replay just like the Id.
 
-Even though the `streamId` is guarenteed to be unique, it's usefulness is limited to an external client as this is an auto-generated GUID from within TAP which doesn't say much about the session, for instance, in terms of its origin. `id` is the most meaningful identifier in terms of keeping track of a session more generally like tracing the session to an ADS (Atlas Data Server) session. However, teh fact that `id` is not unique between replays of the same session in TAP calls for a versioning system for sessions within TAP.
+Even though the `streamId` is guarenteed to be unique, its usefulness is rather limited as this is an auto-generated GUID from within TAP which doesn't say much about the session (for example, information about the origin of the session). `id` is the most meaningful identifier in terms of keeping track of a session across Atlas ecosystem as well as TAP like tracing a TAP session to an ADS (Atlas Data Server) session. However, the fact that `id` is not unique between replays of the same session in TAP calls for a versioning system for sessions within TAP.
 
 #### Why replay a session?
 
-The same historic session may be replayed in TAP for various reasons. Some of the more common uses for replaying the same session are:
+The same historic session may be replayed in TAP for various reasons. Some of the more common uses for replaying a session are:
 
 1. Play a down-sampled version of the original telemetry session;
-2. Run data science models which may be versioned themselves on the same telemetry session.
+2. Run data science models on the same telemetry session in which the models themselves may be versioned.
 
-In order to support the above scenarios, we have introduced session versioning in TAP which allows you to group and version sessions along with metadata about any custom analytics models you may have used during a session replay.
+In order to support scenarios like these, we have introduced session versioning in TAP which allows you to group and version sessions along with metadata about any custom analytics models you may have used during a session replay.
 
 The json representation of a session model:
 
@@ -55,11 +55,11 @@ The json representation of a session model:
   }
 ```
 
-In the above json, `group`, `version` and `configuration` carry information about a session version. `group` indicates any group this session model belongs to. `version` indicates the session version which you are free to use the way best fit your needs (e.g. version the session together with the data science model, not increment the version at all, etc.). You can use `configuration` property store detailed information about the session version (e.g. a stringified representation of the data science model such as a json).
+In the above json, `group`, `version` and `configuration` carry information about a session version. `group` indicates any group this session model belongs to. `version` indicates the session version which you are free to use the way best fit your needs (e.g. version the session together with the data science model, not increment the version at all, etc.). You can use `configuration` property to store detailed information about the session version (e.g. a stringified representation of the data science model such as a json).
 
 #### Querying session versions
 
-Detailed information on querying sessions are described in [Querying Metadata](/docs/Metadata.md). Here we will focus on querying session versions. In TAPI, as far as the client interface concerned, sessions are identifed using the session `id` (not the stream id) to make sure that you can identify a session uniformly across the Atlas ecosystem (Atlas desktop client, ADS, etc) which uses session `id` as the primary session identifier. If there are multiple session versions with the same session `id`, You must specify the session version of a session in TAPI, you can use the optional `sessionVersion` query parameter.
+Detailed information on querying sessions are described in [Querying Metadata](/docs/Metadata.md). Here we will focus on querying session versions. In TAPI, as far as the client interface concerned, sessions are identifed using the session `id` (not the stream id) to make sure that you can identify a session uniformly across the Atlas ecosystem (Atlas desktop client, ADS, etc) which uses session `id` as the primary session identifier. If there are multiple session versions with the same session `id`, you must specify the version of a session in TAPI using the optional `sessionVersion` query parameter.
 
 If you do not specify the session version, TAPI returns the latest version of the session in storage. The latest version is determined, in order of precedence, using the `version`, quality (an internal value related to Atlas sessions) and time of recording. If you did not version the sessions or the session quality is not applicable to your usecase, TAPI will return the last recorded session based on the `timeOfRecording` for that session id.
 
