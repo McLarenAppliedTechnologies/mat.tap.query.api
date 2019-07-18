@@ -641,7 +641,7 @@ Optional parameters
 | page           | Index of page returned in result (0 is first page)          | 3                 |  
 | pageSize       | Size of one page.                                           | 50                |  
 | contains       | Text filter applied to the <ins>identifier</ins> parameter. | vCar              |
-| startsWith     | Text filter applied to the <ins>identifier</ins> parameter  | vCar              |
+| startWith     | Text filter applied to the <ins>identifier</ins> parameter  | vCar              |
 | filter         | It allows filtering on the results.                         | Frequency;ge;10   |
 | order          | It allows ordering of the results.                          | MaximumValue:desc |
 | sessionVersion | Session version.                                            | 3                 |
