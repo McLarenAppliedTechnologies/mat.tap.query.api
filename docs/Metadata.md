@@ -481,12 +481,12 @@ The API allows to retrieve a session by its identifier. If there are multiple ve
 
 Endpoint
 ```
-GET api/v1/connections/{connection name}/sessions/identifier/{identifier}
+GET api/v1/connections/{connection name}/sessions/{id}
 ```
 
 Example  
 ```
-GET api/v1/connections/Connection/sessions/identifier/TestSession1
+GET api/v1/connections/Connection/sessions/test-session-id
 ```
 
 Result  
@@ -508,15 +508,6 @@ Result
   "sessionDetails": []
 }
 ```
-
-Optional parameters  
--------------------  
-
-The ```/sessions/identifier``` resource supports the following optional parameters.
-  
-| Parameter name | Description                                                 | Default value | Example                                                                   |  
-|----------------|-------------------------------------------------------------|---------------|---------------------------------------------------------------------------|
-| sessionVersion | Session version.                                            | Highest available version | 3                                                             | 
 
 <br />
 
