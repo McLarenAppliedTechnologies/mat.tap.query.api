@@ -55,13 +55,13 @@ GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters/{parame
 
 ### Url parameters
 
-| Parameter name | Description                                                                                                                  |    Default value    |    Example                                |
-|----------------|------------------------------------------------------------------------------------------------------------------------------|---------------------|-------------------------------------------|
-| connection     | Connection name.                                                                                                             |                     |    `SQLRACE01`                            |
-| sessionId      | Session Id.                                                                                                                 |                     |    `016fa61e-33e2-7e85-1bc9-4ab56c668136` |
-| parameter      | Name(s) of the parameter(s). *Multiple parameters can be requested by separating them with a comma*                          |                     |    `vCar:Chassis, gLat:Chassis`           |
-| aggregation    | Optional aggregation function separated by a semicolon `;`. *Do not add semicolon if you are not specifying an aggregation.* |    `mean`           |    `;max`                                 |
-| frequency      | Frequency of the results in Hz.                                                                                              |                     |    10                                     |
+| Parameter name | Description                                                                                                                                                                               |    Default value    |    Example                                |
+|----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------|-------------------------------------------|
+| connection     | Connection name.                                                                                                                                                                          |                     |    `SQLRACE01`                            |
+| sessionId      | Session Id.                                                                                                                                                                               |                     |    `016fa61e-33e2-7e85-1bc9-4ab56c668136` |
+| parameter      | Name(s) of the parameter(s). *Multiple parameters can be requested by separating them with a comma*                                                                                       |                     |    `vCar:Chassis, gLat:Chassis`           |
+| aggregation    | Optional aggregation function separated by a semicolon `;`. *Do not add semicolon if you are not specifying an aggregation.* Applicable only for */data/aggregate* and *{frequency}/data* |    `mean`           |    `;max`                                 |
+| frequency      | Frequency of the results in Hz.                                                                                                                                                           |                     |    10                                     |
 
 <br />
 
