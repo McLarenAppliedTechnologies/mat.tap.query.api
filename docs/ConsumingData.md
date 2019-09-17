@@ -74,7 +74,8 @@ Optionally it is possible to filter the data by the following parameters:
 | from           | Filters data in session by time in microseconds or nanoseconds. All data returned would have a time stamp after the specified time. |    `null`           |    1546347600/1546347600000              |
 | to             | Filters data in session by time in microseconds or nanoseconds. All data returned would have a time stamp before the specified time.|    `null`           |    1546348200/1546348200000              |
 | lap            | Filters data for specified lap in session.                                                                                          |    `null`           |    3                                     |
-| filter         | Generic filter expression describing filters.                                                                                       |    `null`           |    `vCar:Chassis;ge;300`                 |
+| dataFilter     | Data filter with comparison operators.                                                                                              |    `null`           |    `vCar:Chassis;ge;300`                 |
+| tagFilter      | Tag filter with comparison operators.                                                                                               |    `null`           |    `lapnumber;eq;2`                      |
 | page           | Index of page returned in result (0 is first page)                                                                                  |      0              |    3                                     |
 | pageSize       | Size of one page.                                                                                                                   |    `null`           |    50                                    |
 | timeUnit       | Units of time. Use `Ns` for nanoseconds and `Ms` for microseconds.                                                                  |      `Ns`           |    `Ms`                                  |
@@ -131,9 +132,10 @@ Json Result:
 
 ### More on filtering
 
-Filter currently is done upon applying to a specific field the sample mode <ins>Mean</ins>. There are multiple types of filters for example:
+The API currently supports filtering parameter data, i.e. the actual values for parameters, and filtering tags, i.e. the metadata associated with the values.
+The parameter data filter value is compared to the aggregated values obtained from the database, e.g. Mean.
 
-#### Filter types
+#### Parameter data filter types
 
 | Shortcut | Full name             |
 |----------|-----------------------|
@@ -144,28 +146,49 @@ Filter currently is done upon applying to a specific field the sample mode <ins>
 | le       | Less than or equal    |
 | ne       | Not equal             |
 
-#### Parameter filter construction
+#### Parameter data filter construction
 
-Structure of one parameter filter is:
+Structure of one parameter data filter is:
 
-Parameter filter url mask
+Parameter data filter url mask
 ```
 {parameterName};{filterOperationShortcut};{value}
 ```
 
-Parameter filter example
+Parameter data filter example
 ```
 vCar:Chassis;gt;300
 ```
 
 Example of filtering values that have vCar between 100 and 150 kph. 
 
-Filter setting example
+Parameter data filter setting example
 ```
 vCar:Chassis;gt;100,vCar:Chassis;le;150
 ```
 
 Note that some parameters have a colon ( : ) in, so we use semicolons ( ; ) for the filtering.
+
+#### Tag filter types
+
+| Shortcut | Full name             |
+|----------|-----------------------|
+| eq       | Equal                 |
+| ne       | Not equal             |
+
+#### Tag filter construction
+
+Structure of one tag filter is:
+
+Tag filter url mask
+```
+{tag};{filterOperationShortcut};'{value}'
+```
+
+Parameter data filter example
+```
+lapnumber;eq;'3'
+```
 
 Query Parameter Data
 ====================
@@ -403,7 +426,7 @@ GET api/v1/connections/{connection name}/sessions/{sessionId}/parameters/{parame
 
 Example
 ```
-GET api/v1/connections/Connection/sessions/64192714-90fe-4865-a191-a6887e465184/parameters/vCar:Chassis;mean,gLat:Chassis;mean/10/data?pageSize=10&filter=vCar:Chassis;ge;300 
+GET api/v1/connections/Connection/sessions/64192714-90fe-4865-a191-a6887e465184/parameters/vCar:Chassis;mean,gLat:Chassis;mean/10/data?pageSize=10&dataFilter=vCar:Chassis;ge;300 
 ```
 
 Csv Result:
@@ -659,7 +682,8 @@ Json Result
 }
 ```
 
-#### Query Parameter Data Aggregates for Multiple Sessions
+Query Parameter Data Aggregates for Multiple Sessions
+=====================================================
 
 This functionality allows you to query aggregate data from multiple sessions by either explicitly specifying the session ids, or by specifying criteria that filters the sessions your are interested in using tags associated with the data, session metadata, and time ranges.
 This is only supported using InfluxDB as data storage for now.
