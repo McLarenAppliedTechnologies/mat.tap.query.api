@@ -661,6 +661,10 @@ Json Result
 
 #### Query Parameter Data Aggregates for Multiple Sessions
 
+This functionality allows you to query aggregate data from multiple sessions by either explicitly specifying the session ids, or by specifying criteria that filters the sessions your are interested in using tags associated with the data, session metadata, and time ranges.
+This is only supported using InfluxDB as data storage for now.
+
+
 Endpoint
 ```
 GET api/v1/connections/{connection name}/sessions/multi/{sessionId_1,sessionId_2,...,sessionId_n}/parameters/{parameter_1,parameter_2,...,parameter_n}/data/aggregate
