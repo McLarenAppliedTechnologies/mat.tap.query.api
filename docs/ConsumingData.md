@@ -659,8 +659,7 @@ Json Result
 }
 ```
 
-Query Parameter Data Aggregates for Multiple Sessions
-=====================================================
+#### Query Parameter Data Aggregates for Multiple Sessions
 
 Endpoint
 ```
