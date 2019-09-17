@@ -658,3 +658,104 @@ Json Result
   ]
 }
 ```
+
+Query Parameter Data Aggregates for Multiple Sessions
+=====================================================
+
+Endpoint
+```
+GET api/v1/connections/{connection name}/sessions/multi/{sessionId_1,sessionId_2,...,sessionId_n}/parameters/{parameter_1,parameter_2,...,parameter_n}/data/aggregate
+```
+
+Example
+```
+GET api/v1/connections/MRL/sessions/multi/4475966e-8096-46d5-b033-3add831c4759,edb14823-7f51-4530-97a5-db458a40b9be,2f333c6c-c57e-44f0-a43e-e7f397e31051,4a863c04-bc9b-405e-ab77-e960b58eac1b/parameters/vCar:Chassis,sLap:Chassis/data/aggregate
+```
+
+Csv Result
+```
+time,tagValues,Mean(vCar:Chassis),Mean(sLap:Chassis)
+1563027942645000000,InfluxDbUri=http://10.228.5.8:8086/;DatabaseName=MrlNorris_2;MeasurementName=MrlNorris-2,128.790105799527,1852.37860522758
+1563028393209000000,InfluxDbUri=http://10.228.5.5:8086/;DatabaseName=MrlSainz_2;MeasurementName=MrlSainz,111.280858322507,1621.34225978648
+```
+
+Json Result
+```Json
+{
+    "timestamps": [
+        1563027942645000000,
+        1563028393209000000
+    ],
+    "values": {
+        "Mean(vCar:Chassis)": [
+            128.79010579952748,
+            111.28085832250734
+        ],
+        "Mean(sLap:Chassis)": [
+            1852.37860522758,
+            1621.3422597864769
+        ]
+    },
+    "tags": [
+        {
+            "InfluxDbUri": "http://10.228.5.8:8086/",
+            "DatabaseName": "MrlNorris_2",
+            "MeasurementName": "MrlNorris-2"
+        },
+        {
+            "InfluxDbUri": "http://10.228.5.5:8086/",
+            "DatabaseName": "MrlSainz_2",
+            "MeasurementName": "MrlSainz"
+        }
+    ]
+}
+```
+
+Endpoint
+```
+GET api/v1/connections/{connection name}/sessions/parameters/{parameter_1,parameter_2,...,parameter_n}/data/aggregate
+```
+
+Example
+```
+GET api/v1/connections/MRL/sessions/parameters/vCar:Chassis,sLap:Chassis/data/aggregate?from=1563027942645000000&to=1563028393209000000
+```
+
+Csv Result
+```
+time,tagValues,Mean(vCar:Chassis),Mean(sLap:Chassis)
+1563027942645000000,InfluxDbUri=http://10.228.5.5:8086/;DatabaseName=MrlSainz_2;MeasurementName=MrlSainz,193.745431884418,2482.41148899907
+1563027942645000000,InfluxDbUri=http://10.228.5.8:8086/;DatabaseName=MrlNorris_2;MeasurementName=MrlNorris-2,175.950110441201,2368.90271126761
+```
+
+Json Result
+```Json
+{
+    "timestamps": [
+        1563027942645000000,
+        1563027942645000000
+    ],
+    "values": {
+        "Mean(vCar:Chassis)": [
+            193.74543188441757,
+            175.95011044120071
+        ],
+        "Mean(sLap:Chassis)": [
+            2482.4114889990706,
+            2368.9027112676058
+        ]
+    },
+    "tags": [
+        {
+            "InfluxDbUri": "http://10.228.5.5:8086/",
+            "DatabaseName": "MrlSainz_2",
+            "MeasurementName": "MrlSainz"
+        },
+        {
+            "InfluxDbUri": "http://10.228.5.8:8086/",
+            "DatabaseName": "MrlNorris_2",
+            "MeasurementName": "MrlNorris-2"
+        }
+    ]
+}
+```
