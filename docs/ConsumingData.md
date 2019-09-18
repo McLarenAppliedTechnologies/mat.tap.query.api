@@ -686,8 +686,10 @@ Query Parameter Data Aggregates for Multiple Sessions
 =====================================================
 
 This functionality allows you to query aggregate data from multiple sessions by either explicitly specifying the session ids, or by specifying criteria that filters the sessions your are interested in using tags associated with the data, session metadata, and time ranges.
-This is only supported using InfluxDB as data storage for now.
+This is only supported using InfluxDB as data storage for now.  
+If the data is being returned from different InfluxDB nodes the response will contain results split by node as you can see in the examples below.
 
+#### Using multiple session ids
 
 Endpoint
 ```
@@ -702,8 +704,8 @@ GET api/v1/connections/MRL/sessions/multi/4475966e-8096-46d5-b033-3add831c4759,e
 Csv Result
 ```
 time,tagValues,Mean(vCar:Chassis),Mean(sLap:Chassis)
-1563027942645000000,InfluxDbUri=http://10.228.5.8:8086/;DatabaseName=MrlNorris_2;MeasurementName=MrlNorris-2,128.790105799527,1852.37860522758
-1563028393209000000,InfluxDbUri=http://10.228.5.5:8086/;DatabaseName=MrlSainz_2;MeasurementName=MrlSainz,111.280858322507,1621.34225978648
+1563027942645000000,InfluxDbUri=http://localhost:8086/;DatabaseName=Driver_A;MeasurementName=Measurement_A,128.790105799527,1852.37860522758
+1563028393209000000,InfluxDbUri=http://localhost:8888/;DatabaseName=Driver_B;MeasurementName=Measurement_B,111.280858322507,1621.34225978648
 ```
 
 Json Result
@@ -725,18 +727,20 @@ Json Result
     },
     "tags": [
         {
-            "InfluxDbUri": "http://10.228.5.8:8086/",
-            "DatabaseName": "MrlNorris_2",
-            "MeasurementName": "MrlNorris-2"
+            "InfluxDbUri": "http://localhost:8086/",
+            "DatabaseName": "Driver_A",
+            "MeasurementName": "Measurement_A"
         },
         {
-            "InfluxDbUri": "http://10.228.5.5:8086/",
-            "DatabaseName": "MrlSainz_2",
-            "MeasurementName": "MrlSainz"
+            "InfluxDbUri": "http://localhost:8888/",
+            "DatabaseName": "Driver_B",
+            "MeasurementName": "Measurement_B"
         }
     ]
 }
 ```
+
+#### Using search criteria to find the sessions
 
 Endpoint
 ```
@@ -751,8 +755,8 @@ GET api/v1/connections/MRL/sessions/parameters/vCar:Chassis,sLap:Chassis/data/ag
 Csv Result
 ```
 time,tagValues,Mean(vCar:Chassis),Mean(sLap:Chassis)
-1563027942645000000,InfluxDbUri=http://10.228.5.5:8086/;DatabaseName=MrlSainz_2;MeasurementName=MrlSainz,193.745431884418,2482.41148899907
-1563027942645000000,InfluxDbUri=http://10.228.5.8:8086/;DatabaseName=MrlNorris_2;MeasurementName=MrlNorris-2,175.950110441201,2368.90271126761
+1563027942645000000,InfluxDbUri=http://localhost:8888/;DatabaseName=Driver_B;MeasurementName=Measurement_B,193.745431884418,2482.41148899907
+1563027942645000000,InfluxDbUri=http://localhost:8086/;DatabaseName=Driver_A;MeasurementName=Measurement_A,175.950110441201,2368.90271126761
 ```
 
 Json Result
@@ -774,15 +778,38 @@ Json Result
     },
     "tags": [
         {
-            "InfluxDbUri": "http://10.228.5.5:8086/",
-            "DatabaseName": "MrlSainz_2",
-            "MeasurementName": "MrlSainz"
+            "InfluxDbUri": "http://localhost:8888/",
+            "DatabaseName": "Driver_B",
+            "MeasurementName": "Measurement_B"
         },
         {
-            "InfluxDbUri": "http://10.228.5.8:8086/",
-            "DatabaseName": "MrlNorris_2",
-            "MeasurementName": "MrlNorris-2"
+            "InfluxDbUri": "http://localhost:8086/",
+            "DatabaseName": "Driver_A",
+            "MeasurementName": "Measurement_A"
         }
     ]
 }
 ```
+
+A more complete example
+
+* <span style="color:lightblue">Get maximum and minimum for parameters gLat and gLong</span>
+  * for sessions
+    * <span style="color:lightgreen">where number of laps is greater than 5</span>
+    * <span style="color:orange">between 5. 9. 2019 and 8. 9. 2019,</span>
+    * <span style="color:red">where driver is Driver_A,</span> 
+  * where
+    * <span style="color:purple">lapnumber is 3</span>
+    * <span style="color:yellow">vCar:Chassis is greater than 100</span>
+  * group by sessionId 
+
+Actual query
+
+/api/v1/connections/MRL/sessions/parameters/ 
+<span style="color:lightblue">gLat:Chassis;max,gLat:Chassis;min,gL:Chassis;min,gLong:Chassis;max,</span>
+/data/aggregate? 
+filter=<span style="color:lightgreen">lapsCount;gt;10</span>,<span style="color:orange">timeOfRecording;gt;2019-09-05,timeOfRecording;le;2019-09-08</span>& 
+<span style="color:red">items=Driver:Driver_A</span>& 
+<span style="color:purple">tagfilter=lapnumber;eq;3</span>& 
+<span style="color:yellow">dataFilter=vCar:Chassis;gt;100</span>& 
+groupby= sessionId 
