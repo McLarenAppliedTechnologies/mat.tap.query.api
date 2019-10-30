@@ -14,9 +14,7 @@
 
 # Introduction
 
-TAPI stands for Telemetry Analytics API. It allows platform-independent access to historic data. It provides an abstraction between specific storage technology used such as SqlRace and InfluxDb while adding analytics capabilities like data masking.
-
-One instance of TAPI aggregates multiple storage instances. REST API provides access to session metadata, session telemetry data but also results of live models.
+The Telemetry Analytics API (TAPI) service provides programmatic access to persisted stream data. The REST API provides access to session metadata, telemetry data and model results. Additionally, the API exposes data analytic features such as data/metadata masking and filtering, aggregation and grouping. The service is configured via a REST API.
 
 ![](/docs/TapiDiagram.png)
 
