@@ -13,14 +13,12 @@
 
 # Identity Server
 
-Identity Server implements OpenID Connect and provides authentication services for Telemetry Analytics API. Identity Server provides following services.
-
-- Provides a RESTful API to manage TAPI users and clients;
-- Facilitate OAuth2.0 flows to authorize access to TAPI resources.
+Identity Server implements OpenID Connect and provides authentication services for Telemetry Analytics API. The Identity Server facilitates OAuth2.0 flows to authorize access to TAPI.
 
 ### Deployment
 #### .NET Core runtime
-First you need to install .NET Core 2.1 runtime. You can download it [here](https://www.microsoft.com/net/download/dotnet-core/2.1). Example for Ubuntu 18.04 LTE: 
+
+Pre-requisite: Install the .NET Core 2.1 runtime. You can download it [here](https://www.microsoft.com/net/download/dotnet-core/2.1). Example for Ubuntu 18.04 LTE: 
 
 ```
 wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
@@ -31,34 +29,8 @@ sudo apt-get update
 sudo apt-get --yes install aspnetcore-runtime-2.1
 ```
 
-#### Daemon installation
-One way to run Identity Server is using systemd daemon service. In the release bundle, there is a shell script **daemon_deploy.sh** for daemon installation. 
-
-Before you run it, execute following commands:
-```
-awk 'BEGIN{RS="^$";ORS="";getline;gsub("\r","");print>ARGV[1]}' daemon_deploy.sh
-sudo chmod 777 daemon_deploy.sh
-```
-
-Then run:
-```
-./daemon_deploy.sh
-```
-
-You can verify it by:
-
-```
-journalctl --unit MAT.TAP.IdentityServer.service --follow -n 100
-```
-
-or start and stop by 
-
-```
-sudo systemctl stop MAT.TAP.IdentityServer.service
-sudo systemctl start MAT.TAP.IdentityServer.service
-```
-
-or configure your config in **/opt/MAT.TAP.IdentityServer/appsettings.Production.json**
+#### Use the Docker image
+https://bintray.com/beta/#/mclarenappliedtechnologies/mtap/identity-service?tab=overview
 
 #### Running Identity Server from Terminal
 
