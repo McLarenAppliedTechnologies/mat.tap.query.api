@@ -48,9 +48,10 @@ Where:
 Set  `InitializeDatabase` to `True` to initialize database configured in ConnectionStrings section. This creates the database if it doesn't exist and applies any pending database migrations.
 
 Start the service from the command line as follows:
-    dotnet MAT.TAP.AAS.TelemetryAnalytics.API.dll --urls="http://*:5000"
-    Where:
-     -- urls refers to the port the API is available on
+    ```dotnet MAT.TAP.AAS.TelemetryAnalytics.API.dll --urls="http://*:5000"```
+
+Where:
+ - --urls refers to the port the API is available on
 
 ## SQLRace
 
