@@ -828,7 +828,7 @@ JSON result
 
 Query
 ```
-GET /api/v1/connections/Connection/sessions/parameters/gLat;max,gLat;min,gLong;max,gLong;min/data/aggregate?filter=lapsCount;gt;5,timeOfRecording;gt;2019-09-05,timeOfRecording;le;2019-09-08&items=Driver:Driver_A&dataFilter=vCar;gt;50&tagFilter=lapnumber;eq;3&groupby=sessionId 
+GET /api/v1/connections/Connection/sessions/parameters/gLat;max,gLat;min,gLong;max,gLong;min/data/aggregate?filter=lapsCount;gt;5,timeOfRecording;gt;2019-09-05,timeOfRecording;le;2019-09-08&details=Driver:Driver_A&dataFilter=vCar;gt;50&tagFilter=lapnumber;eq;3&groupby=sessionId 
 ```
 
 The results below will be grouped by session id.
@@ -888,7 +888,7 @@ If we remove the restriction for the lap number to be 3, i.e. all lap numbers co
 
 Query
 ```
-GET /api/v1/connections/Connection/sessions/parameters/gLat;max,gLat;min,gLong;max,gLong;min/data/aggregate?filter=lapsCount;gt;5,timeOfRecording;gt;2019-09-05,timeOfRecording;le;2019-09-08&items=Driver:Driver_A&dataFilter=vCar;gt;50&groupby=sessionId&groupby=lapnumber 
+GET /api/v1/connections/Connection/sessions/parameters/gLat;max,gLat;min,gLong;max,gLong;min/data/aggregate?filter=lapsCount;gt;5,timeOfRecording;gt;2019-09-05,timeOfRecording;le;2019-09-08&details=Driver:Driver_A&dataFilter=vCar;gt;50&groupby=sessionId&groupby=lapnumber 
 ```
 
 CSV Result
