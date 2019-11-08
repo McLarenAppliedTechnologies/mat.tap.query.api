@@ -15,8 +15,8 @@
 
 Identity Server implements OpenID Connect and provides authentication services for Telemetry Analytics API. Identity Server provides following services.
 
-- Provides a RESTful API to manage TAPI users and clients;
-- Facilitate OAuth2.0 flows to authorize access to TAPI resources.
+- A RESTful API to manage TAP API users and clients.
+- Facilitate OAuth2.0 flows to authorize access to TAP API resources.
 
 ### Deployment
 #### .NET Core runtime
@@ -31,42 +31,15 @@ sudo apt-get update
 sudo apt-get --yes install aspnetcore-runtime-2.1
 ```
 
-#### Daemon installation
-One way to run Identity Server is using systemd daemon service. In the release bundle, there is a shell script **daemon_deploy.sh** for daemon installation. 
+#### Docker
 
-Before you run it, execute following commands:
-```
-awk 'BEGIN{RS="^$";ORS="";getline;gsub("\r","");print>ARGV[1]}' daemon_deploy.sh
-sudo chmod 777 daemon_deploy.sh
-```
-
-Then run:
-```
-./daemon_deploy.sh
-```
-
-You can verify it by:
-
-```
-journalctl --unit MAT.TAP.IdentityServer.service --follow -n 100
-```
-
-or start and stop by 
-
-```
-sudo systemctl stop MAT.TAP.IdentityServer.service
-sudo systemctl start MAT.TAP.IdentityServer.service
-```
-
-or configure your config in **/opt/MAT.TAP.IdentityServer/appsettings.Production.json**
+Download the docker image [here](https://bintray.com/beta/#/mclarenappliedtechnologies/mtap/identity-service?tab=readme)
 
 #### Running Identity Server from Terminal
 
 Alternatively, you can use Identity Server by adding the relevant configuration in `appsettings.Production.json` file and running the following command from the terminal. Make sure you are in the same directory as the **MAT.TAP.IdentityServer.dll**.
 
     dotnet MAT.TAP.IdentityServer.dll --urls="http://*:5000"
-
-**Please note that the daemon is using configuration file from /opt/MAT.TAP.IdentityServer/appsettings.Production.json and that service needs restart to reconfigure.**
 
 A sample configuration and an explanation of settings is given below.
 
@@ -104,7 +77,7 @@ A sample configuration and an explanation of settings is given below.
 
 ### User Management
 
-Identity Server exposes several resources under `/users` path to manage TAPI user accounts.
+Identity Server exposes several resources under `/users` path to manage TAP API user accounts.
 
 #### Get Users
 
